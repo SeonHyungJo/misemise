@@ -7,7 +7,7 @@ class Header extends Component {
       <>
         <div className = "container">
           <div className = "menu">
-            헤더 내용
+            헤더 내용22
           </div>
           <div className = "icon">
             아이콘
