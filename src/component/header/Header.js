@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './Header.css';
 
 class Header extends Component {
+  fn_iconClick = (e)=>{
+    return alert(e.type+"이벤트");
+  }
+
   render() {
     return (
       <>
@@ -9,7 +13,7 @@ class Header extends Component {
           <div className = "headerMenu">
             헤더 내용22
           </div>
-          <div className = "icon">
+          <div className = "icon" onClick={this.fn_iconClick} >
             아이콘
           </div>
         </div>

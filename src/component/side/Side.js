@@ -1,29 +1,36 @@
 import React, { Component } from 'react';
 import './Side.css';
-//import TreeView from  'react-treeviewer';
 import TreeView from'../treeView/TreeView'
 let data = [{
   id:1,
   text:"메뉴1",
-  icon:"folder",
+  icon:"",
   expanded:true,
   children:[{
       id:3,
       selected: true,
       checked: false,
-      text:"Child 1",
+      text:"소메뉴",
       iconObj: {
           name: 'rocket',
           size: '2x',
           spin: true,
           style: { color: 'red' }
       },
-      children:[{id:5, text:"Grandchild 1"}]
+      children:[{id:5, text:"소메뉴의 소메뉴"}]
       }
   ]
 }]
 
 class SideBox extends Component {
+
+  
+  onSelect = (e,a)=>{
+    debugger;
+    console.log(123);
+    return alert(12);
+  }
+
   render() {
     return (
       <>
@@ -31,8 +38,11 @@ class SideBox extends Component {
           <div className = "sidebox">
            <div className = "contents">
               <div className="menu">
-              <TreeView
-                data={data}
+              <TreeView   
+                onExpand= {this.onSelect} 
+                onCollapse= {this.onSelect} 
+                onSelect= {this.onSelect} 
+                data={data} 
               />
               </div>
            </div>
