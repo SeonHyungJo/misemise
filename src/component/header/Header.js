@@ -6,7 +6,7 @@ class Header extends Component {
     return (
       <>
         <div className = "container">
-          <div className = "menu">
+          <div className = "headerMenu">
             헤더 내용22
           </div>
           <div className = "icon">

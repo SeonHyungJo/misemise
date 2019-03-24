@@ -1,0 +1,28 @@
+.side{
+  z-index: -200;
+  position: absolute;
+  left: 0;
+  top: 50px;
+  bottom: 0;
+  width: 200px;
+  background: #f4f6f7;
+  border-right: 1px solid #dce2e4;
+  overflow: hidden;
+}
+
+.sidebox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.contents {
+  background-color:#f4f6f7;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  outline-width: 0;
+}
+
