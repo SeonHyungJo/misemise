@@ -1,22 +1,27 @@
+ul.tree-root {
+  margin: 0px !important;
+}
 
-/*1Depth*/
 ul.tree-root li {
   margin-left : 0px !important;
 }
-/*주제*/
+/*1Depth*/
 ul.tree-root>li>div{
   background:  #edeef3;
   padding-top: 7px;
   padding-bottom: 7px;
   font-weight: bolder;
   font-size : 15px;
-
+  height: 24px;
+  vertical-align: middle;
 }
-/* 자식요소*/
+
+/*2Depth*/
 ul.tree-root>li>ul.tree-branch{
   background:#f4f6f7;
   margin-left: 15px;
   font-size : 14px;
+  height: inherit;
 }
 
 .ad-selected-node{

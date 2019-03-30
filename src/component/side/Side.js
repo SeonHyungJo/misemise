@@ -16,8 +16,7 @@ let data = [{
           size: '2x',
           spin: true,
           style: { color: 'red' }
-      },
-      children:[{id:5, text:"소메뉴의 소메뉴"}]
+      }
       }
   ]
 }]

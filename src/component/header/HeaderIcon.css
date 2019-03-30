@@ -1,0 +1,14 @@
+
+.icon {
+    z-index: 200;
+    padding: 0;
+    margin: 13px 5px;
+    color:#ffffff;
+    display: inline-block;
+}
+
+.iconContainer{
+  position: relative;
+  display: inline-block;
+}
+

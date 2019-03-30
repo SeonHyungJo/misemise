@@ -4,29 +4,31 @@
     padding: 0;
     margin: 0px;
     background: #4d4d4d;
+    text-align: right;
 }
 
 .headerMenu {
   position: absolute;
-  left: 20px;
-  top: 15px;
+  top: 22px;
   width: 126px;
   height: 17px;
   padding: 0;
   margin: 0;
-  font-size: 0;
+  font-size: 22px;
+  font-weight: bolder;
   line-height: 0;
-  overflow: hidden;
-  text-indent: -9999px;
   color:#ffffff;
 }
 .icon {
     z-index: 200;
-    position: absolute;
-    right: 25px;
-    top: 10px;
     padding: 0;
-    margin: 0;
+    margin: 13px 5px;
     color:#ffffff;
+    display: inline-block;
+}
+
+.iconContainer{
+  position: relative;
+  display: inline-block;
 }
 
