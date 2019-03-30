@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header name={3} data={headerData}/>
+        <Header name={"미세미세"} data={headerData}/>
         <Side />
       </div>
     );

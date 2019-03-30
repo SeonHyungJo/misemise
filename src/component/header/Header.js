@@ -12,7 +12,7 @@ class Header extends Component {
     state : 컴포넌트 자체가 지닌값, 내부에서 읽고 업데이트 가능한 값.
   */
   state = {
-    iconNum: 0
+    iconNum: this.props.data.length
   }
 
 
@@ -26,7 +26,7 @@ class Header extends Component {
  
   handlerGoHome = (e)=>{
     this.setState({iconNum: this.state.iconNum+1});
-    return alert(this.state.iconNum);
+    return alert("현재 아이콘 갯수"+this.state.iconNum);
   }
 
   render() {
@@ -36,14 +36,7 @@ class Header extends Component {
           <div className = "headerMenu"  onClick={this.handlerGoHome}>
             {this.props.name}
           </div>
-          <div className = "iconContainer">
-             {this.props.data.map((o) => {
-                  return (
-                    <HeaderIcon name={o.name} value={o.value}/>
-                  );
-              })}
-          </div>
-    
+          <HeaderIcon data={this.props.data}/>
         </div>
       </>
     );

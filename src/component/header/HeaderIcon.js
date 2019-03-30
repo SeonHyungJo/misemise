@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './Header.css';
+import './HeaderIcon.css';
 
 class HeaderIcon extends Component {
 
-    static defaultProps = {
-      name : "아이콘"
-    }
-  
     static propTypes = {  //(transform-calss-properties문법)
-      name : PropTypes.string.isRequired //타입설정
+     // data : PropTypes.object.isRequired //타입설정
     }
    
     handlerLink = (e)=>{
-      return alert("경로이동"+this.props.value);
+      return alert("경로 이동"+e.target.title);
     }
-  
+
     render() {
       return (
         <>
-            <div onClick={this.handlerLink} className="icon">
-              {this.props.name}
-            </div>
+         <div className = "iconContainer">
+             {
+                this.props.data.map((o) => {
+                  return (
+                    <div onClick={this.handlerLink} className="icon" title={o.value} >
+                        {o.name}
+                    </div>
+                  );
+              })} }
+          </div>
         </>
       );
     }
   }
-  
-  
   export default HeaderIcon;
   
