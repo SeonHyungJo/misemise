@@ -9,7 +9,8 @@ class HeaderIcon extends Component {
     }
    
     handlerLink = (e)=>{
-      return alert("경로 이동"+e.target.title);
+        debugger;
+      return alert("경로 이동:"+e.target.href);
     }
 
     render() {
@@ -19,9 +20,9 @@ class HeaderIcon extends Component {
              {
                 this.props.data.map((o) => {
                   return (
-                    <div onClick={this.handlerLink} className="icon" title={o.value} >
+                    <a onClick={this.handlerLink} className="icon" href={o.value} >
                         {o.name}
-                    </div>
+                    </a>
                   );
               })} }
           </div>
