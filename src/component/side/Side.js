@@ -3,23 +3,17 @@ import './Side.css';
 import TreeView from'../treeView/TreeView'
 let data = [{
   id:1,
-  text:"메뉴1",
-  icon:"",
+  label:"Depth1",
+  icon:"dept1",
   expanded:true,
   children:[{
       id:3,
+      label:"Depth2",
       selected: true,
-      checked: false,
-      text:"소메뉴",
-      iconObj: {
-          name: 'rocket',
-          size: '2x',
-          spin: true,
-          style: { color: 'red' }
-      }
+      icon:"dept2"
       }
   ]
-}]
+}];
 
 class SideBox extends Component {
 
@@ -38,9 +32,6 @@ class SideBox extends Component {
            <div className = "contents">
               <div className="menu">
               <TreeView   
-                onExpand= {this.onSelect} 
-                onCollapse= {this.onSelect} 
-                onSelect= {this.onSelect} 
                 data={data} 
               />
               </div>

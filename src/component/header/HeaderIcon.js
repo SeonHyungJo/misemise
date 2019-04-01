@@ -5,11 +5,10 @@ import './HeaderIcon.css';
 class HeaderIcon extends Component {
 
     static propTypes = {  //(transform-calss-properties문법)
-     // data : PropTypes.object.isRequired //타입설정
+      data : PropTypes.array.isRequired //타입설정
     }
    
     handlerLink = (e)=>{
-        debugger;
       return alert("경로 이동:"+e.target.href);
     }
 
@@ -18,9 +17,9 @@ class HeaderIcon extends Component {
         <>
          <div className = "iconContainer">
              {
-                this.props.data.map((o) => {
+                this.props.data.map((o,i) => {
                   return (
-                    <a onClick={this.handlerLink} className="icon" href={o.value} >
+                    <a onClick={this.handlerLink} className="icon" href={o.value} key={i}>
                         {o.name}
                     </a>
                   );
