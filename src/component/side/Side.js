@@ -8,10 +8,37 @@ let data = [{
   expanded:true,
   children:[{
       id:3,
-      label:"Depth2",
+      label:"Depth1_2",
+      value:"/two",
       selected: true,
       icon:"dept2"
-      }
+      },{
+        id:3,
+        label:"Depth1_2",
+        value:"/three",
+        selected: true,
+        icon:"dept2"
+        }
+  ]
+},
+{
+  id:1,
+  label:"Depth2",
+  icon:"dept1",
+  expanded:true,
+  children:[{
+      id:3,
+      label:"Depth2_2",
+      value:"/two",
+      selected: true,
+      icon:"dept2"
+      },{
+        id:3,
+        label:"Depth2_2",
+        value:"/three",
+        selected: true,
+        icon:"dept2"
+        }
   ]
 }];
 

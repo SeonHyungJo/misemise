@@ -10,8 +10,8 @@ let headerData = [
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <Header name={"미세미세"} data={headerData}/>
+      <div className="App" >
+        <Header name={"미세미세"} data={headerData} />
         <Side />
       </div>
     );
