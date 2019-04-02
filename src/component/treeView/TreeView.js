@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './TreeView.css';
 
-
-
 class TreeView_ud extends Component {
 
   constructor(props){
@@ -33,7 +31,7 @@ class TreeView_ud extends Component {
           <div className="treeview_child">
             <div id="tw_menu_child_1" className="treeview_child">
               {chdList.map((o,j)=>(
-                    <div tabindex="-1"  className="treeview_group" index="2" label={o.label} key={i+"_"+i}>
+                    <div tabindex="-1"  className="treeview_group" index="2" label={o.label} key={i+"_"+j}>
                       <table  treenodevalue={o.value} index="2" cellPadding="0" cellSpacing="0" className="treeview_node treeview_table_node treeview_leaf treeview_open_child treeview_first_sibling">
                         <tbody> 
                           <tr className="treeview_row_parent treeview_row_depth2">
@@ -41,8 +39,7 @@ class TreeView_ud extends Component {
                               <div className="treeview_icon_none">
                               </div>
                             </td>
-                            <td className="treeview_none">
-                            </td>
+                            <td className="treeview_none"/>
                             <td className="treeview_col_label">
                               <span className="treeview_label">{o.label}</span>
                             </td>
@@ -66,7 +63,7 @@ class TreeView_ud extends Component {
       }
     });
 
-    let row = rowList.map((o,i)=>o);
+    let row = rowList.map(o=>o);
     return (
       <>
         <div tabIndex="0"  index="0" style={{"marginTop":"5px"}} className="treeview wq_tvw">
