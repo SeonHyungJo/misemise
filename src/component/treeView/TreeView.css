@@ -1,12 +1,7 @@
-ul.tree-root {
-  margin: 0px !important;
-}
 
-ul.tree-root li {
-  margin-left : 0px !important;
-}
+
 /*1Depth*/
-ul.tree-root>li>div{
+.treeview_row_parent .treeview_row_depth1{
   background:  #edeef3;
   padding-top: 7px;
   padding-bottom: 7px;
@@ -17,13 +12,27 @@ ul.tree-root>li>div{
 }
 
 /*2Depth*/
-ul.tree-root>li>ul.tree-branch{
+.treeview_child .treeview_group {
   background:#f4f6f7;
   margin-left: 15px;
   font-size : 14px;
   height: inherit;
 }
 
-.ad-selected-node{
-  background: inherit;
+/*depth1 image*/
+.treeview_row_depth1 .treeview_icon_navi {
+  width: 27px;
+  background: url(/src/component/treeView/ico_tree_depth1_minus.png) no-repeat 7px center;
+}
+
+/*depth2 image*/
+.treeview_col_icon_navi .treeview_icon_none {
+  width: 10px;
+  height: 24px;
+  background: url(/src/component/treeView/bg_tvw_middle.png) no-repeat 0 7px;
+}
+
+/*child 숨기기*/
+table.treeview_close_child tr.treeview_row_child {
+  display: none;
 }

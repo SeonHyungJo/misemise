@@ -8,7 +8,7 @@ let data = [{
   expanded:true,
   children:[{
       id:3,
-      label:"Depth1_2",
+      label:"Depth1_1",
       value:"/two",
       selected: true,
       icon:"dept2"
@@ -28,7 +28,7 @@ let data = [{
   expanded:true,
   children:[{
       id:3,
-      label:"Depth2_2",
+      label:"Depth2_1",
       value:"/two",
       selected: true,
       icon:"dept2"
