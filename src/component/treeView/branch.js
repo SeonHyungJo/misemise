@@ -14,7 +14,6 @@ class Branch extends Component {
   handlerClick = (e)=>{
     let openClass = "treeview_open_child";
     let closeClass = "treeview_close_child";
-    //let target = e.currentTarget.querySelector("table.treeview_table_node");
     let target = e.currentTarget.parentNode.parentNode; //tableNode;
     let isOpen = target.classList.contains(openClass);
     if(isOpen){
@@ -28,7 +27,7 @@ class Branch extends Component {
 
   render() {
     let label     = this.props.label;
-    let i         = this.props.index;
+    let idx         = this.props.index;
     let elements  = this.props.elements;  
     let expanded  = this.props.expanded.toString();  
     let expandClass = expanded ? " treeview_open_child" 
@@ -36,8 +35,8 @@ class Branch extends Component {
 
     return ( 
       <>
-        <div tabIndex="-1" className="treeview_group" index={i} label={label} key={i}   >
-          <table treenodevalue="Converting" index={i} cellPadding="0" cellSpacing="0" opened={expanded} className={"treeview_node treeview_table_node treeview_notleaf treeview_first_sibling"+expandClass} >
+        <div tabIndex="-1" className="treeview_group" index={idx} label={label} key={idx}   >
+          <table treenodevalue="Converting" index={idx} cellPadding="0" cellSpacing="0" opened={expanded} className={"treeview_node treeview_table_node treeview_notleaf treeview_first_sibling"+expandClass} >
             <tbody>
               <tr className="treeview_row_parent treeview_row_depth1" onClick={this.handlerClick}>
                 <td  className="treeview_col_icon_navi">
@@ -50,8 +49,8 @@ class Branch extends Component {
               <tr className="treeview_row_child">
                 <td  className="treeview_noguideline treeview_col_depth1"/>
                 <td colSpan="2">
-                  <div id="tw_menu_child_1" className="treeview_child">
-                    <Branch2 elements={elements} index={i}/>
+                  <div id={"tw_menu_child_"+{idx}} className="treeview_child">
+                    <Branch2 elements={elements} index={idx}/>
                   </div>
                 </td>
             </tr>

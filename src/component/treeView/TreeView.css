@@ -1,44 +1,100 @@
 
+/* 좌측트리메뉴 */
+.wq_tvw{position:relative;height:100%;background:transparent}
+.wq_tvw > .treeview_group{border-top:1px solid #d2d4d9}/* 1depth에만 border 넣기 */
+.wq_tvw > .treeview_group:first-child{border-top:0}/* 1depth 첫번째 border 빼기 */
+.wq_tvw > .treeview_group:last-child{border-bottom:1px solid #d2d4d9}/* 1depth 마지막에 border값 넣기 */
+.wq_tvw .treeview_group{width:100%;}/* width:95%를 100%로 변경 - border을 사용할 경우 끝까지 라인이 안들어감 */
+.wq_tvw .treeview_table_node{table-layout:auto;position:static; width: 100%}/* 전체 width값을 제대로 표현못함 - table-layout:fixed를 변경 */
+.wq_tvw .treeview_icon_navi{height:27px}/* 전체 icon들어가는 td의 높이값 설정 */
+.wq_tvw .treeview_label{display:block;font-size:14px;padding:0;color:#222;letter-spacing:-1px;white-space:normal}/* 전체 label의 설정값 */
+.wq_tvw .treeview_select_node{color:#005eea}/* treeview에서 선택된 label의 설정값 */
 
-/*1Depth*/
-.treeview_row_parent .treeview_row_depth1{
-  background:  #edeef3;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  font-weight: bolder;
-  font-size : 15px;
-  height: 24px;
-  vertical-align: middle;
-}
+/* 1depth */
+.wq_tvw .treeview_row_depth1 .treeview_icon_navi{height:26px}
+.wq_tvw .treeview_row_depth1 .treeview_label{font-weight:bold;font-size:15px;padding:9px 0 11px 0}
+.wq_tvw .treeview_row_depth1 .treeview_col_icon_navi,.wq_tvw .treeview_row_depth1 .treeview_noguideline{width:27px}
+.wq_tvw .treeview_row_depth1 .treeview_icon_none{width:27px;background:url(/views/cm/images/inc/bg_tvw_first_middle.png) no-repeat 9px 7px}
+.wq_tvw .treeview_open_child .treeview_row_depth1{border-bottom:1px solid #d2d4d9;background:#edeef3}
+.wq_tvw .treeview_open_child.treeview_first_sibling .treeview_row_depth1{border-top:0}
 
-/*2Depth*/
-.treeview_child .treeview_group {
-  background:#f4f6f7;
-  margin-left: 15px;
-  font-size : 14px;
-  height: inherit;
-}
+/* 2depth */
+.wq_tvw .treeview_row_depth2 .treeview_icon_navi,.wq_tvw .treeview_row_depth2 .treeview_icon_none {height:36px;background-position-y:13px;}
 
-/*depth1 image open*/
-table.treeview_open_child  tr.treeview_row_parent  div.treeview_icon_navi {
-  width: 27px;
-  background: url(/src/component/treeView/ico_tree_depth1_minus.png) no-repeat 7px center;
-}
+.wq_tvw .treeview_open_child.treeview_root_multi_leaf .treeview_row_depth1,
+.wq_tvw .treeview_open_child.treeview_leaf .treeview_row_depth1{border-bottom:0;background:#fff}
 
-/*depth1 image close*/
-table.treeview_close_child  tr.treeview_row_parent  div.treeview_icon_navi {
-  width: 27px;
-  background: url(/src/component/treeView/ico_tree_depth1_plus.png) no-repeat 7px center;
-}
+.wq_tvw .treeview_open_child .treeview_row_depth1 .treeview_icon_navi{width:27px;background:url(/src/component/treeView/ico_tree_depth1_minus.png) no-repeat 7px center;}/* 1depth가 선택되었을 때 배경 */
+.wq_tvw .treeview_close_child .treeview_row_depth1 .treeview_icon_navi{width:27px;background:url(/src/component/treeView/ico_tree_depth1_plus.png) no-repeat 7px center}/* 1depth가 선택전일 때 배경 */
 
-/*depth2 image*/
-.treeview_col_icon_navi .treeview_icon_none {
-  width: 10px;
-  height: 24px;
-  background: url(/src/component/treeView/bg_tvw_middle.png) no-repeat 0 7px;
-}
+/* 2depth아래는 동일한 디자인일때 */
+.wq_tvw .treeview_open_child .treeview_icon_navi{width:18px;background:url(/src/component/treeView/ico_tree_depth1_minus.png) no-repeat 0 center}/* 1depth */
+.wq_tvw .treeview_close_child .treeview_icon_navi{width:18px;background:url(/src/component/treeView/ico_tree_depth1_plus.png) no-repeat 0 center}/* 1depth */
+
+/* 가이드라인이 들어갈 경우 - 속성 lineShow:true  */
+.wq_tvw .treeview_guideline{background:url(/views/cm/images/inc/bg_tvw_vline.png) repeat-y}
+.wq_tvw .treeview_col_icon_navi,.wq_tvw .treeview_noguideline{width:12px;height:0}
+
+.wq_tvw .treeview_icon_none{width:10px;height:24px;background:url(/src/component/treeView/bg_tvw_middle.png) no-repeat 0 7px}
+.wq_tvw .treeview_open_child > .treeview_row_child > .treeview_child > .treeview_group:first-child{padding-top:8px}
+
+/* 1depth hover일 때 */
+.wq_tvw .treeview_row_depth1:hover .treeview_col_icon_navi, .wq_tvw .treeview_row_depth1:hover .treeview_col_label {background-color:#3eaae8;}
+.wq_tvw .treeview_row_depth1:hover .treeview_label {color:#fff;}
 
 /*child 숨기기*/
 table.treeview_close_child tr.treeview_row_child {
-  display: none;
-}
+    display: none;
+  }
+
+  
+/* common css */
+/* form 정렬 */
+.fl{float:left;min-height:14px}
+.fr{float:right;min-height:14px}
+
+/* text 정렬 */
+.tal{text-align:left !important}
+.tac{text-align:center !important}
+.tar{text-align:right !important}
+
+/* text-decoration */
+.tdu{text-decoration:underline !important}
+
+/* font */
+/* 강조 */
+.fwn{font-weight:normal !important}
+.fwb{font-weight:600 !important}
+/* color */
+.fcr{color:#f00 !important}
+.fcb{color:#00f !important}
+/* 알파벳 소문자를 대문자로 */
+.ttu{text-transform:uppercase}
+
+/* margin  */
+.mt0 {margin-top:0 !important}
+.mt3 {margin-top:3px !important}
+.mt5 {margin-top:5px !important}
+.mt10 {margin-top:10px !important;}
+.mt20 {margin-top:20px !important;}
+.mr3 {margin-right:3px !important;}
+.mr5 {margin-right:5px !important;}
+.ml0 {margin-left:0 !important}
+.ml15 {margin-left:15px !important;}
+.ml20 {margin-left:20px !important;}
+
+.ml5 {margin-left:5px !important}
+
+
+/* padding */
+.p0{padding:0}
+.pt5{padding-top:5px}
+.pt10{padding-top:10px}
+.pr5{padding-right:5px}
+.pr10{padding-right:10px}
+.pr20{padding-right:20px}
+.pb5{padding-bottom:5px}
+.pb10{padding-bottom:10px}
+.pl5{padding-left:5px}
+.pl10{padding-left:10px}
+.pl20{padding-left:20px}

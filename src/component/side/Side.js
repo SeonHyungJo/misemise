@@ -5,7 +5,7 @@ import TreeView from'../treeView/TreeView'
 //db 조회.
 let data = [{
   id:1,
-  label:"Depth11",
+  label:"Depth1",
   icon:"dept1",
   expanded:"true",
   children:[{
