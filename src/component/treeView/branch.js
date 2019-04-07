@@ -14,7 +14,8 @@ class Branch extends Component {
   handlerClick = (e)=>{
     let openClass = "treeview_open_child";
     let closeClass = "treeview_close_child";
-    let target = e.currentTarget.querySelector("table.treeview_table_node");
+    //let target = e.currentTarget.querySelector("table.treeview_table_node");
+    let target = e.currentTarget.parentNode.parentNode; //tableNode;
     let isOpen = target.classList.contains(openClass);
     if(isOpen){
       target.classList.replace(openClass,closeClass);
@@ -30,10 +31,10 @@ class Branch extends Component {
 
     return ( 
       <>
-        <div tabIndex="-1" className="treeview_group" index="1" label={label} key={i}  onClick={this.handlerClick} >
-          <table treenodevalue="Converting" index="1" cellPadding="0" cellSpacing="0" className="treeview_node treeview_table_node treeview_notleaf treeview_open_child treeview_first_sibling" opened="true">
+        <div tabIndex="-1" className="treeview_group" index={i} label={label} key={i}   >
+          <table treenodevalue="Converting" index={i} cellPadding="0" cellSpacing="0" className="treeview_node treeview_table_node treeview_notleaf treeview_open_child treeview_first_sibling" opened="true">
             <tbody>
-              <tr className="treeview_row_parent treeview_row_depth1" >
+              <tr className="treeview_row_parent treeview_row_depth1" onClick={this.handlerClick}>
                 <td  className="treeview_col_icon_navi">
                   <div className="treeview_icon_navi"/>
                 </td>
@@ -49,8 +50,6 @@ class Branch extends Component {
                   </div>
                 </td>
             </tr>
-
-           
             </tbody>
           </table>
         </div>
