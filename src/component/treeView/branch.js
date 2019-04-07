@@ -14,12 +14,12 @@ class Branch extends Component {
   render() {
     let label     = this.props.label;
     let i         = this.props.index;
-    let elements  = this.props.elements;
+    let elements  = this.props.elements;  
 
     let handlerClick = (e)=>{
       let openClass = "treeview_open_child";
       let closeClass = "treeview_close_child";
-      let target = e.currentTarget.getElementsByClassName("treeview_node treeview_table_node treeview_notleaf treeview_first_sibling")[0];
+      let target = e.currentTarget.querySelector("table.treeview_table_node");
       let isOpen = target.classList.contains(openClass);
       if(isOpen){
         target.classList.replace(openClass,closeClass);
@@ -41,13 +41,12 @@ class Branch extends Component {
                   <span  className="treeview_label">{label}</span>
                 </td>
               </tr>
-              
               <tr className="treeview_row_child">
                 <td  className="treeview_noguideline treeview_col_depth1"/>
                 <td colSpan="2">
                   <div id="tw_menu_child_1" className="treeview_child">
                     <Branch2 elements={elements} index={i}/>
-                    </div>
+                  </div>
                 </td>
             </tr>
 
