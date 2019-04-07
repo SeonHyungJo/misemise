@@ -13,17 +13,16 @@ class HeaderIcon extends Component {
     }
 
     render() {
+      let itemes = this.props.data.map((o,i) =>  (
+            <a onClick={this.handlerLink} className="icon" href={o.value} key={i}>
+                {o.name}
+            </a>
+          ));
+
       return (
         <>
-         <div className = "iconContainer">
-             {
-                this.props.data.map((o,i) => {
-                  return (
-                    <a onClick={this.handlerLink} className="icon" href={o.value} key={i}>
-                        {o.name}
-                    </a>
-                  );
-              })} }
+          <div className = "iconContainer">
+              {itemes} 
           </div>
         </>
       );

@@ -19,10 +19,16 @@
   height: inherit;
 }
 
-/*depth1 image*/
-.treeview_row_depth1 .treeview_icon_navi {
+/*depth1 image open*/
+table.treeview_open_child  tr.treeview_row_parent  div.treeview_icon_navi {
   width: 27px;
   background: url(/src/component/treeView/ico_tree_depth1_minus.png) no-repeat 7px center;
+}
+
+/*depth1 image close*/
+table.treeview_close_child  tr.treeview_row_parent  div.treeview_icon_navi {
+  width: 27px;
+  background: url(/src/component/treeView/ico_tree_depth1_plus.png) no-repeat 7px center;
 }
 
 /*depth2 image*/

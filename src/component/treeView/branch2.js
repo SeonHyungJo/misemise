@@ -17,7 +17,7 @@ class Branch2 extends Component {
 
     let depth_2 = chdList.map((o,j)=>{
       return(
-        <div tabIndex="-1"  className="treeview_group" index="2" label={o.label} key={prefix+j} name={prefix+j}>
+        <div tabIndex="-1"  className="treeview_group" index="2" label={o.label} key={prefix+j} >
           <table  treenodevalue={o.value} index="2" cellPadding="0" cellSpacing="0" className="treeview_node treeview_table_node treeview_leaf treeview_open_child treeview_first_sibling">
             <tbody> 
               <tr className="treeview_row_parent treeview_row_depth2">

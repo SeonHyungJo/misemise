@@ -11,26 +11,26 @@ class Branch extends Component {
     } 
   }
 
+  handlerClick = (e)=>{
+    let openClass = "treeview_open_child";
+    let closeClass = "treeview_close_child";
+    let target = e.currentTarget.querySelector("table.treeview_table_node");
+    let isOpen = target.classList.contains(openClass);
+    if(isOpen){
+      target.classList.replace(openClass,closeClass);
+    }else{
+      target.classList.replace(closeClass,openClass);
+    }
+  }
+
   render() {
     let label     = this.props.label;
     let i         = this.props.index;
     let elements  = this.props.elements;  
 
-    let handlerClick = (e)=>{
-      let openClass = "treeview_open_child";
-      let closeClass = "treeview_close_child";
-      let target = e.currentTarget.querySelector("table.treeview_table_node");
-      let isOpen = target.classList.contains(openClass);
-      if(isOpen){
-        target.classList.replace(openClass,closeClass);
-      }else{
-        target.classList.replace(closeClass,openClass);
-      }
-    }
-
     return ( 
       <>
-        <div tabIndex="-1" className="treeview_group" index="1" label={label} key={i} name={i} onClick={handlerClick} >
+        <div tabIndex="-1" className="treeview_group" index="1" label={label} key={i}  onClick={this.handlerClick} >
           <table treenodevalue="Converting" index="1" cellPadding="0" cellSpacing="0" className="treeview_node treeview_table_node treeview_notleaf treeview_open_child treeview_first_sibling" opened="true">
             <tbody>
               <tr className="treeview_row_parent treeview_row_depth1" >
