@@ -19,8 +19,10 @@ class Branch extends Component {
     let isOpen = target.classList.contains(openClass);
     if(isOpen){
       target.classList.replace(openClass,closeClass);
+      target.attributes.opened.value = "false";
     }else{
       target.classList.replace(closeClass,openClass);
+      target.attributes.opened.value = "true";
     }
   }
 
@@ -28,11 +30,14 @@ class Branch extends Component {
     let label     = this.props.label;
     let i         = this.props.index;
     let elements  = this.props.elements;  
+    let expanded  = this.props.expanded.toString();  
+    let expandClass = expanded ? " treeview_open_child" 
+                               : " treeview_close_child";
 
     return ( 
       <>
         <div tabIndex="-1" className="treeview_group" index={i} label={label} key={i}   >
-          <table treenodevalue="Converting" index={i} cellPadding="0" cellSpacing="0" className="treeview_node treeview_table_node treeview_notleaf treeview_open_child treeview_first_sibling" opened="true">
+          <table treenodevalue="Converting" index={i} cellPadding="0" cellSpacing="0" opened={expanded} className={"treeview_node treeview_table_node treeview_notleaf treeview_first_sibling"+expandClass} >
             <tbody>
               <tr className="treeview_row_parent treeview_row_depth1" onClick={this.handlerClick}>
                 <td  className="treeview_col_icon_navi">

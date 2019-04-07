@@ -16,7 +16,7 @@ class TreeView_ud extends Component {
  
     let data = this.props.data;
     let rows = data.map( (obj, idx)=>(
-          <Branch label={obj.label} index={idx} elements ={obj.children} key={idx}/>
+          <Branch label={obj.label} index={idx} elements ={obj.children}  expanded={obj.expanded} key={idx}/>
         ));
     return (
       <>

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import './Side.css';
 import TreeView from'../treeView/TreeView'
+
+//db 조회.
 let data = [{
   id:1,
   label:"Depth11",
   icon:"dept1",
-  expanded:true,
+  expanded:"true",
   children:[{
       id:3,
       label:"Depth1_1",
@@ -44,13 +46,6 @@ let data = [{
 
 class SideBox extends Component {
 
-  
-  onSelect = (e,a)=>{
-    debugger;
-    console.log(123);
-    return alert(12);
-  }
-
   render() {
     return (
       <>
@@ -58,9 +53,7 @@ class SideBox extends Component {
           <div className = "sidebox">
            <div className = "contents">
               <div className="menu">
-              <TreeView   
-                data={data} 
-              />
+                <TreeView  data={data}  />
               </div>
            </div>
           </div>
