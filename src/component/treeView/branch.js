@@ -27,16 +27,17 @@ class Branch extends Component {
 
   render() {
     let label     = this.props.label;
-    let idx         = this.props.index;
+    let idx       = this.props.index;
     let elements  = this.props.elements;  
     let expanded  = this.props.expanded.toString();  
     let expandClass = expanded ? " treeview_open_child" 
                                : " treeview_close_child";
+    let tableClassList = "treeview_node treeview_table_node treeview_notleaf treeview_first_sibling"+expandClass
 
     return ( 
       <>
         <div tabIndex="-1" className="treeview_group" index={idx} label={label} key={idx}   >
-          <table treenodevalue="Converting" index={idx} cellPadding="0" cellSpacing="0" opened={expanded} className={"treeview_node treeview_table_node treeview_notleaf treeview_first_sibling"+expandClass} >
+          <table treenodevalue="Converting" index={idx} cellPadding="0" cellSpacing="0" opened={expanded} className={tableClassList} >
             <tbody>
               <tr className="treeview_row_parent treeview_row_depth1" onClick={this.handlerClick}>
                 <td  className="treeview_col_icon_navi">

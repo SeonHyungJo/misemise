@@ -22,8 +22,7 @@ class Branch2 extends Component {
             <tbody> 
               <tr className="treeview_row_parent treeview_row_depth2">
                 <td  className="treeview_col_icon_navi">
-                  <div className="treeview_icon_none">
-                  </div>
+                  <div className="treeview_icon_none"/>
                 </td>
                 <td className="treeview_none"/>
                 <td className="treeview_col_label">

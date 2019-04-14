@@ -2,7 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-
+// import firebase from "firebase";
+// var config = {
+//     apiKey: "AIzaSyAl0UiLcthzODblQH6DvFthuKiwNK2kekY",
+//     authDomain: "misemise-ef1e2.firebaseapp.com",
+//     databaseURL: "https://misemise-ef1e2.firebaseio.com",
+//     projectId: "misemise-ef1e2",
+//     storageBucket: "misemise-ef1e2.appspot.com",
+//     messagingSenderId: "165566845904"
+//   };
+//   firebase.initializeApp(config);
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
