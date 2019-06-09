@@ -5,11 +5,7 @@ import axios from 'axios'
 const API_KEY = 'mglCHo09SQqHPVt1AyfuZymDTpMndPMH2ZR3ZrZFR0OdywtT6AlVRQF%2BE8wphx716aaU%2FxS6zLQ1USWLLAkMaQ%3D%3D'
 
 function getMiseDate(){
-    return axios.get(`http://dummy.restapiexample.com/api/v1/employees`, 
-    {
-        headers: {"Access-Control-Allow-Origin": "*"}, 
-    }
-    )
+    return axios.get(`http://localhost:3000`)
 }
 
 // Action
