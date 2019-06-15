@@ -23,7 +23,10 @@ class App extends Component {
         <button onClick={decrementAsync}>-</button>
         <button onClick={getDataAsync}>Get Data</button>
         <div>{data}</div>
+        <div id="map" ></div>
       </div>
+     
+
       // <div className="App">
       //   <Header />
       // </div>
