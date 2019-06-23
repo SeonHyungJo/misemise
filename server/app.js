@@ -25,20 +25,19 @@ app.get('/', function (req, res) {
   let zoomLevel = req.query.zoomLevel || 2;
   let pageNo = 1;
   let Rows = 1;
-  let uri = "http://openapi.airkorea.or.kr/openapi/services/rest";
+  let uri = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc";
   
   uri +=
     zoomLevel === "2"  //전국
-        ? `/ArpltnInforInqireSvc/getCtprvnMesureLIst?itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK`
+        ? `/getCtprvnMesureLIst?itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK`
     : zoomLevel === "4"  //군구
-        ? `/ArpltnInforInqireSvc/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
+        ? `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
     : zoomLevel === "7" //읍면동
-        ? `/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=${stationName}&dataTerm=month&ver=1.3` 
+        ? `/getMsrstnAcctoRltmMesureDnsty?stationName=${stationName}&dataTerm=month&ver=1.3` 
     : "";
 
-    uri += `&pageNo=${pageNo}&numOfRows=${Rows}&ServiceKey=${SERVICE_KEY}&_returnType=json`;
+  uri += `&pageNo=${pageNo}&numOfRows=${Rows}&ServiceKey=${SERVICE_KEY}&_returnType=json`;
 
-    console.log('노드',uri);
 //공공API 서버에 요청.
   request(uri.trim(), 
      (error, response, body) => {

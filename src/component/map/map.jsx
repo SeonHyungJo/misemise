@@ -3,98 +3,83 @@ import loadScriptPromise from './loadNavermapsScript';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { getDataAsync } from '../../modules';
-import { resolve } from 'q';
 
 
 class Map extends Component {
+
+  //redux에서 관리할 값과 구분.
   state = {
     miseList: []
   }
 
-  componentDidMount = ()=>{
-    const {ncpClientId} = this.props;
-    loadScriptPromise(ncpClientId).then((naver)=>{
-      const { getDataAsync,lat,lng,zoomLevel, data } = this.props;
 
+  componentDidMount = ()=>{
+    const { ncpClientId,getDataAsync,_lat,_lng,zoomLevel, data } = this.props;
+    
+    loadScriptPromise(ncpClientId).then((naver)=>{
+      let zoomRange = [2,4,7];
+      let maxZoom = zoomRange[zoomRange.length-1];
+      let minZoom = zoomRange[0];
+      
+      
       //전국 : 2, 시군구 :4  읍면동 : 7
+      //naver.maps. PointBounds 경계 생성.
+      //인터렉션 옵션.
       const mapOptions = {
-        center: new naver.maps.LatLng( lat,  lng),    //충주
+        logoControl: false,
+        mapDataControl: false,
+        scaleControl: false,
+        center: new naver.maps.LatLng( _lat,_lng),    //충주
+        draggable: false,
+        scrollWheel: false,
+        keyboardShortcuts: false,
+        disableDoubleTapZoom: true,
+        disableDoubleClickZoom: true,
+        disableTwoFingerTapZoom: true,
         zoom: zoomLevel,
-        maxZoom : 7,
-        minZoom : 2,
-        scrollWheel: false
+        //baseTileOpacity: 0.5,
+        maxZoom : maxZoom,
+        minZoom : minZoom
       };
       let map = new naver.maps.Map('map', mapOptions);
 
+   
       naver.maps.Event.addListener(map, 'click', (e) => {
-        return getDataAsync({...e.latlng,zoomLevel,naver});
+        console.log('좌클릭',e.latlng);
+        let currentZoom = map.getZoom();
+        if(maxZoom>currentZoom){
+          let nextZoom = zoomRange[zoomRange.indexOf(currentZoom)+1] || currentZoom;
+          map.setZoom(nextZoom);
+          map.setCenter( new  naver.maps.LatLng( e.latlng._lat,  e.latlng._lng));
+           getDataAsync({...e.latlng,zoomLevel,naver,map});
+        }
       });
 
+
+      naver.maps.Event.addListener(map, 'rightclick', (e) => {
+        console.log('우클릭',e.latlng);
+        let currentZoom = map.getZoom();
+        if(minZoom<currentZoom){
+          let nextIdx = zoomRange.indexOf(currentZoom)-1;
+          let nextZoom = zoomRange[nextIdx] || currentZoom;
+          map.setZoom(nextZoom);
+          map.setCenter( new  naver.maps.LatLng( e.latlng._lat,  e.latlng._lng));
+        }
+      });
+
+      return  getDataAsync({_lat,_lng,zoomLevel,naver,map});
     }).catch((ex)=>{
       console.error(ex);
     });
   
   }
-  // componentDidMount = () => {
-  //   let ncpClientId = "har461wdhc";
-  //   let myLocation = {}
-
-  //   loadScriptPromise(ncpClientId).then((_naverObj) => {
-  //     let promise = new Promise(function(resolve, reject){
-  //       navigator.geolocation.getCurrentPosition(function (position) {
-  //         myLocation.lat = position.coords.latitude
-  //         myLocation.log = position.coords.longitude
-
-  //         let mapOptions = {
-  //           center: new _naverObj.maps.LatLng(myLocation.lat, myLocation.log),
-  //           zoom: 14,
-  //           maxZoom: 15,
-  //           minZoom: 2,
-  //           scrollWheel: true
-  //         };
-
-  //         let map = new _naverObj.maps.Map('map', mapOptions);
-
-  //         _naverObj.maps.Service.reverseGeocode({
-  //           coords: new _naverObj.maps.LatLng(myLocation.lat, myLocation.log),
-  //         }, function (status, response) {
-  //           if (status !== _naverObj.maps.Service.Status.OK) {
-  //             return alert('Something wrong!');
-  //           }
-
-  //           var result = response.v2, // 검색 결과의 컨테이너
-  //             items = result.results; // 검색 결과의 배열
-  //           console.log(items[0].region.area2.name)
-  //           resolve(items)
-  //         });
-  //       });
-  //     })
-        
-  //     promise.then((items) => {
-  //       fetch(`http://localhost:8080?stationName=${items[0].region.area2.name}`)
-  //         .then(res => res.json())
-  //         .then(data => {
-  //           this.setState((prev) => {
-  //             return {
-  //               miseList: data.list
-  //             }
-  //           })
-  //         })
-  //     })
-  //   })
-  // }
 
   render() {
-    //console.log("네이버맵 왔쪄요~",this.props)
-    //componentDidMount가 호출이 안 된다. 왜?
-    //이 그러면 여기서 map 객체를 직접 수정하는식으로 구현해야할듯.
-    // const { miseList } = this.state
     const {data} = this.props
     console.log(data)
     return (
       <>
         <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={element => this.map = element}></div>
-        {/* {JSON.stringify(miseList)} */}
         {JSON.stringify(data)}
       </>
     );
@@ -103,8 +88,9 @@ class Map extends Component {
 
 
 const mapStateToProps =   (state) => ({
-  lat: state.lat,
-  lng: state.lng,
+  mapObj: state.mapObj,
+  _lat: state.lat,
+  _lng: state.lng,
   zoomLevel: state.zoomLevel,
   data : state.data
 });
