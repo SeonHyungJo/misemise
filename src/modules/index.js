@@ -33,8 +33,6 @@ export const getData = createAction(GET_MISE_DATA);
 
 
 export const getDataAsync = (otp) => dispatch => {
-
-
     //주소변환.
     converLatLngToAddr(otp).then( rtn => {
         return getMiseDate({...otp,addr:rtn});
