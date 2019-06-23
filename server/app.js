@@ -35,7 +35,7 @@ app.get('/', function (req, res) {
     : zoomLevel === "4"  //군구
         ? `/ArpltnInforInqireSvc/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
     : zoomLevel === "7" //읍면동
-        ? `MsrstnInfoInqireSvc/getTMStdrCrdnt?umdName=${umdName}` 
+        ? `/MsrstnInfoInqireSvc/getTMStdrCrdnt?umdName=${umdName}` 
     : "";
     
     uri += `&pageNo=${pageNo}&numOfRows=${Rows}&ServiceKey=${SERVICE_KEY}&_returnType=json`;
