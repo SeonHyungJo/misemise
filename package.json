@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "iso-8859-2": "^1.0.0",
     "load-js": "^3.0.3",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",

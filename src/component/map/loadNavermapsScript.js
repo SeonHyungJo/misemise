@@ -4,6 +4,7 @@ import loadJs from 'load-js';
 const loadScriptPromise = (_ncpClientId) =>{ 
     let requestUrl = "https://openapi.map.naver.com/openapi/v3/maps.js";
     requestUrl +=`?ncpClientId=${_ncpClientId}`;
+    requestUrl +="&submodules=geocoder";
     return loadJs(requestUrl).then(() => {
       const navermaps = window.naver;
 

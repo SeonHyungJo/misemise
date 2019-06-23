@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { getDataAsync } from './modules';
+import { Provider } from 'react-redux';
+import store from './store';
 
 //Component
 //import Header from './component/header/Header'
@@ -10,20 +9,10 @@ import Map from './component/map/map'
 
 class App extends Component {
 
-  componentDidMount() {
-    const { getDataAsync } = this.props;
-    
-    getDataAsync();
-  } 
-
   render() {
-    const { getDataAsync, data } = this.props;
-    return (
-      <div>
 
-        <Map/>
-      </div>
-     
+    return (
+        <Map ncpClientId="har461wdhc"/>
 
       // <div className="App">
       //   <Header />
@@ -32,14 +21,6 @@ class App extends Component {
   }
 }
 
-const mapStateToProps =   (state) => ({
-  number: state.value,
-  data : state.data
-});
-
-const maDispatchToPrope =  (dispatch) => ({
-  getDataAsync: bindActionCreators(getDataAsync, dispatch)
-})
 
 
-export default connect(mapStateToProps,maDispatchToPrope)(App);
+export default App;
