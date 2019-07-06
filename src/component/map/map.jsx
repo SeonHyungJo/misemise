@@ -7,6 +7,8 @@ import { getDataAsync } from '../../modules'
 class Map extends Component {
   constructor () {
     super()
+    this.map = React.createRef()
+
     // redux에서 관리할 값과 구분.
     this.state = {
       miseList: []
@@ -75,7 +77,7 @@ class Map extends Component {
     console.log(data)
     return (
       <>
-        <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={ element => this.map = element}></div>
+        <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={this.map}></div>
         {JSON.stringify(data)}
       </>
     )
