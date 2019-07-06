@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@toast-ui/react-grid": "^1.0.0",
     "axios": "^0.18.0",
     "dotenv": "^8.0.0",
     "iso-8859-2": "^1.0.0",
