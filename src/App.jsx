@@ -1,18 +1,12 @@
-import React, { Component } from 'react';
-//Component
+import React, { Component } from 'react'
 import Map from './component/map/map'
 
-
 class App extends Component {
-
-  render() {
-
+  render () {
     return (
-        <Map ncpClientId="har461wdhc"/>
-    );
+      <Map ncpClientId="har461wdhc"/>
+    )
   }
 }
 
-
-
-export default App;
+export default App
