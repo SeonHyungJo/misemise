@@ -4,7 +4,7 @@ import Map from './component/map/map'
 class App extends Component {
   render () {
     return (
-      <Map ncpClientId="har461wdhc"/>
+      <Map ncpClientId={process.env.REACT_APP_SERVICEKEY}/>
     )
   }
 }
