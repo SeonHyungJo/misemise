@@ -54,7 +54,7 @@ class Map extends Component {
       map.data.setStyle(function (feature) {
         var styleOptions = {
           fillColor: '#ff0000',
-          fillOpacity: 0.3,
+          fillOpacity: 0.0,
           strokeColor: '#ff0000',
           strokeWeight: 2,
           strokeOpacity: 0.8
@@ -69,6 +69,16 @@ class Map extends Component {
         }
 
         return styleOptions
+      })
+
+      map.data.addListener('mouseover', function(e) {
+        map.data.overrideStyle(e.feature, {
+          strokeWeight: 8,
+        });
+
+        map.data.addListener('mouseout', function(e) {  
+            map.data.revertStyle();
+        });
       })
 
       naver.maps.Event.addListener(map, 'click', (e) => {
@@ -113,7 +123,7 @@ class Map extends Component {
     return (
       <>
         <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={this.map}></div>
-        {JSON.stringify(data)}
+        {/* {JSON.stringify(data)} */}
       </>
     )
   }
