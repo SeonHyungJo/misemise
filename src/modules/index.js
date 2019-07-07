@@ -4,7 +4,9 @@ import axios from 'axios'
 const  getMiseDate = ( otp )=>{
 
     let {sido,dongmyun}  = otp.addr.addrdetail;
-    console.log(otp.addr.addrdetail);
+
+    console.log(otp.nextZoom,sido,dongmyun );
+    //sido이름과 stationName을 매핑해줄 JSON이 필요함.
     return axios.request({
         method: 'GET',
         url :`http://localhost:8080?zoomLevel=${otp.nextZoom}&sidoName=${sido}&stationName=${dongmyun}`
@@ -41,6 +43,7 @@ export const getDataAsync = (otp) => dispatch => {
         return getMiseDate({...otp,addr:rtn});
     }).then(rtn=>{
         // 요청이 성공했을경우, 서버 응답내용을 payload 로 설정하여 GET_POST_SUCCESS 액션을 디스패치합니다.
+
         dispatch({
             type: GET_MISE_DATA,
             payload: {...rtn,...otp}
@@ -69,7 +72,6 @@ export default handleActions({
     [GET_MISE_DATA] : (state, action) => 
     {
         const { data,_lat,_lng,map } = action.payload;
-   
 
         return {
             ...state,
@@ -77,7 +79,7 @@ export default handleActions({
             'mapObj' :  map,
             'lat' :  _lat,
             'lng' :  _lng,
-            'data' : data.list[0]
+            'data' : data
         };
     },
 }, counterInitialState);
