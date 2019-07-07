@@ -44,6 +44,33 @@ class Map extends Component {
       }
       let map = new naver.maps.Map('map', mapOptions)
 
+      this.setState((prevState) => {
+        return ({
+          ...prevState,
+          newMap: map
+        })
+      })
+
+      map.data.setStyle(function (feature) {
+        var styleOptions = {
+          fillColor: '#ff0000',
+          fillOpacity: 0.3,
+          strokeColor: '#ff0000',
+          strokeWeight: 2,
+          strokeOpacity: 0.8
+        }
+
+        if (feature.getProperty('focus')) {
+          styleOptions.fillOpacity = 0.6
+          styleOptions.fillColor = '#0f0'
+          styleOptions.strokeColor = '#0f0'
+          styleOptions.strokeWeight = 4
+          styleOptions.strokeOpacity = 1
+        }
+
+        return styleOptions
+      })
+
       naver.maps.Event.addListener(map, 'click', (e) => {
         // console.log('좌클릭',e.latlng);
         let currentZoom = map.getZoom()
@@ -77,6 +104,12 @@ class Map extends Component {
   render () {
     const { data } = this.props
     console.log(data)
+    if (data.geoData) {
+      data.geoData.forEach(element => {
+        this.state.newMap.data.addGeoJson(element)
+      })
+      // this.state.newMap.data.addGeoJson(data.geoData[0])
+    }
     return (
       <>
         <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={this.map}></div>
