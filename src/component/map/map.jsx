@@ -45,23 +45,25 @@ class Map extends Component {
 
    
       naver.maps.Event.addListener(map, 'click', (e) => {
-        console.log('좌클릭',e.latlng);
+        //console.log('좌클릭',e.latlng);
         let currentZoom = map.getZoom();
         if(maxZoom>currentZoom){
           let nextZoom = zoomRange[zoomRange.indexOf(currentZoom)+1] || currentZoom;
           map.setZoom(nextZoom);
+          console.log(currentZoom,nextZoom);
           map.setCenter( new  naver.maps.LatLng( e.latlng._lat,  e.latlng._lng));
-           getDataAsync({...e.latlng,zoomLevel,naver,map});
+           getDataAsync({...e.latlng,nextZoom,naver,map});
         }
       });
 
 
       naver.maps.Event.addListener(map, 'rightclick', (e) => {
-        console.log('우클릭',e.latlng);
+        //console.log('우클릭',e.latlng);
         let currentZoom = map.getZoom();
         if(minZoom<currentZoom){
           let nextIdx = zoomRange.indexOf(currentZoom)-1;
           let nextZoom = zoomRange[nextIdx] || currentZoom;
+          console.log(nextZoom);
           map.setZoom(nextZoom);
           map.setCenter( new  naver.maps.LatLng( e.latlng._lat,  e.latlng._lng));
         }

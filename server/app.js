@@ -10,9 +10,9 @@ const port = process.env.PORT;
 const SERVICE_KEY = process.env.AIR_SERVICEKEY;
 
 app.all('/*', function(req, res, next) {
+  res.header("Accept-Charset", "utf-8");
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Accept-Charset", "utf-8");
   res.header("Content-Type", "text/html; charset=utf-8");
   
   next();

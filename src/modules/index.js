@@ -3,10 +3,11 @@ import axios from 'axios'
 
 const  getMiseDate = ( otp )=>{
 
+    let {sido,dongmyun}  = otp.addr.addrdetail;
     console.log(otp.addr.addrdetail);
     return axios.request({
         method: 'GET',
-        url :`http://localhost:8080?zoomLevel=${otp.zoomLevel}&sidoName=${otp.sidoName}&stationName=${otp.stationName}`
+        url :`http://localhost:8080?zoomLevel=${otp.nextZoom}&sidoName=${sido}&stationName=${dongmyun}`
     });
 };
 
@@ -72,7 +73,7 @@ export default handleActions({
 
         return {
             ...state,
-            'zoomLevel' :  state.zoomLevel ,
+            'zoomLevel' :  state.nextZoom ,
             'mapObj' :  map,
             'lat' :  _lat,
             'lng' :  _lng,
