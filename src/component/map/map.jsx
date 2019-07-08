@@ -12,7 +12,7 @@ class Map extends Component {
     // redux에서 관리할 값과 구분.
     this.state = {
       miseList: []
-    }
+    } 
   }
 
   componentDidMount () {
@@ -71,14 +71,14 @@ class Map extends Component {
         return styleOptions
       })
 
-      map.data.addListener('mouseover', function(e) {
+      map.data.addListener('mouseover', function (e) {
         map.data.overrideStyle(e.feature, {
-          strokeWeight: 8,
-        });
+          strokeWeight: 8
+        })
 
-        map.data.addListener('mouseout', function(e) {  
-            map.data.revertStyle();
-        });
+        map.data.addListener('mouseout', function (e) {
+          map.data.revertStyle()
+        })
       })
 
       naver.maps.Event.addListener(map, 'click', (e) => {
@@ -113,7 +113,6 @@ class Map extends Component {
 
   render () {
     const { data } = this.props
-    console.log(data)
     if (data.geoData) {
       data.geoData.forEach(element => {
         this.state.newMap.data.addGeoJson(element)
