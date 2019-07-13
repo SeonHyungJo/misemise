@@ -19,7 +19,6 @@ class App extends Component {
     const gridData = []
 
     let getLevel = (_num) => {
-      let result ;
       _num = parseInt(_num, 10)
 
       let container = []
@@ -28,13 +27,10 @@ class App extends Component {
       container.push({ min: 36, max: 75, level: '나쁨' })
       container.push({ min: 76, max: 999, level: '매우나쁨' })
 
-      container.forEach((info)=>{
-        if(info.min <= _num && _num < info.max){
-          result = info.level;
-        }
-      })
-
-      return result;
+      return container.filter((info) => {
+        let condition = info.min <= _num && _num <= info.max
+        return condition
+      })[0]
     }
 
     if (data.airData) {
@@ -42,7 +38,7 @@ class App extends Component {
       for (var item in data.airData) {
         if (data.airData.hasOwnProperty(item) && !exception.includes(item)) {
           gridData.push({
-            id: item, name: data.airData[item], etc: getLevel(data.airData[item])
+            id: item, name: data.airData[item], etc: getLevel(data.airData[item]).level
           })
         }
       }

@@ -2,13 +2,14 @@ import { handleActions, createAction } from 'redux-actions'
 import axios from 'axios'
 
 const getMiseDate = (otp) => {
-  console.log(otp.addr.addrdetail)
+  console.log('getMiose', otp)
   return axios.request({
     method: 'GET',
-    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&sidoName=${otp.sidoName}&stationName=${otp.stationName}`
+    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&sidoName=${otp.sidoName}&stationName=${otp.stationName}&parentCd=${otp.parentCd}`
   })
 }
 
+// 한글 주소로 변환한다.
 const converLatLngToAddr = (otp) => {
   const { naver, _lat, _lng } = otp
 

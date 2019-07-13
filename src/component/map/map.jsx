@@ -3,6 +3,7 @@ import loadScriptPromise from './loadNavermapsScript'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDataAsync } from '../../modules'
+import { cloneObject } from '../../util/common'
 
 class Map extends Component {
   constructor () {
@@ -12,14 +13,14 @@ class Map extends Component {
     // redux에서 관리할 값과 구분.
     this.state = {
       miseList: []
-    } 
+    }
   }
 
   componentDidMount () {
     const { ncpClientId, getDataAsync, _lat, _lng, zoomLevel } = this.props
 
     loadScriptPromise(ncpClientId).then((naver) => {
-      let zoomRange = [2, 4, 7]
+      let zoomRange = [2, 4, 6]
       let maxZoom = zoomRange[zoomRange.length - 1]
       let minZoom = zoomRange[0]
 
@@ -47,9 +48,11 @@ class Map extends Component {
       this.setState((prevState) => {
         return ({
           ...prevState,
-          newMap: map
+          newMap: map,
+          parentCd: []
         })
       })
+      let that = this
 
       map.data.setStyle(function (feature) {
         var styleOptions = {
@@ -81,27 +84,48 @@ class Map extends Component {
         })
       })
 
-      naver.maps.Event.addListener(map, 'click', (e) => {
-        // console.log('좌클릭',e.latlng);
+      // zoom UP
+      map.data.addListener('click', function (e) {
+        let feature = e.feature
+        // let isFocused = feature.getProperty('focus')
+        // feature.setProperty('focus', !isFocused)
+
+        let { x, y } = e.feature.bounds.getCenter()
+        let _lat = y
+        let _lng = x
+
         let currentZoom = map.getZoom()
         if (maxZoom > currentZoom) {
-          let nextZoom = zoomRange[zoomRange.indexOf(currentZoom) + 1] || currentZoom
-          map.setZoom(nextZoom)
-          console.log(currentZoom, nextZoom)
-          map.setCenter(new naver.maps.LatLng(e.latlng._lat, e.latlng._lng))
-          getDataAsync({ ...e.latlng, nextZoom, naver, map })
+          let parentCd = currentZoom === 2 ? feature.property_CTPRVN_CD
+            : currentZoom === 4 ? feature.property_SIG_CD
+              : parentCd
+
+          let tempArr = that.state.parentCd.slice()
+          tempArr.push(parentCd)
+          that.setState({ 'parentCd': tempArr })
+          let zoomLevel = zoomRange[zoomRange.indexOf(currentZoom) + 1] || currentZoom
+          map.setZoom(zoomLevel)
+          map.setCenter(new naver.maps.LatLng(_lat, _lng))
+          getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd })
         }
       })
 
-      naver.maps.Event.addListener(map, 'rightclick', (e) => {
+      // zoom Down
+      map.data.addListener('rightclick', (e) => {
         // console.log('우클릭',e.latlng);
+        let { x, y } = e.feature.bounds.getCenter()
+        let _lat = y
+        let _lng = x
+
         let currentZoom = map.getZoom()
         if (minZoom < currentZoom) {
           let nextIdx = zoomRange.indexOf(currentZoom) - 1
-          let nextZoom = zoomRange[nextIdx] || currentZoom
-          console.log(nextZoom)
-          map.setZoom(nextZoom)
-          map.setCenter(new naver.maps.LatLng(e.latlng._lat, e.latlng._lng))
+          let zoomLevel = zoomRange[nextIdx] || currentZoom
+          map.setZoom(zoomLevel)
+          map.setCenter(new naver.maps.LatLng(_lat, _lng))
+
+          let parentCd = that.state.parentCd.shift()
+          getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd })
         }
       })
 
@@ -114,10 +138,18 @@ class Map extends Component {
   render () {
     const { data } = this.props
     if (data.geoData) {
+      // 데이터 초기화
+      let allFeature = this.state.newMap.data.getAllFeature()
+
+      if (allFeature.length > 0) {
+        while (allFeature.length > 0) {
+          let item = allFeature[0]
+          this.state.newMap.data.removeFeature(item)
+        }
+      }
       data.geoData.forEach(element => {
         this.state.newMap.data.addGeoJson(element)
       })
-      // this.state.newMap.data.addGeoJson(data.geoData[0])
     }
     return (
       <>
