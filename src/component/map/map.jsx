@@ -12,7 +12,26 @@ class Map extends Component {
 
     // redux에서 관리할 값과 구분.
     this.state = {
-      miseList: []
+      miseList: [],
+      adapter: {
+        'Seoul': 'seoul',
+        'Busan': 'busan',
+        'Daegu': 'daegu',
+        'Incheon': 'incheon',
+        'Gwangju': 'gwangju',
+        'Daejeon': 'daejeon',
+        'Ulsan': 'ulsan',
+        'Sejong-si': 'sejong',
+        'Gyeonggi-do': 'gyeonggi',
+        'Gangwon-do': 'gangwon',
+        'Chungcheongbuk-do': 'chungbuk',
+        'Chungcheongnam-do': 'chungnam',
+        'Jeollabuk-do': 'jeonbuk',
+        'Jellanam-do': 'jeonnam',
+        'Gyeongsangbuk-do': 'gyeongbuk',
+        'Gyeongsangnam-do': 'gyeongnam',
+        'Jeju-do': 'jeju'
+      }
     }
   }
 
@@ -54,7 +73,21 @@ class Map extends Component {
       })
       let that = this
 
-      map.data.setStyle(function (feature) {
+      map.data.setStyle((feature) => {
+        // console.log('feature', feature.property_SIG_ENG_NM || '')
+
+        let adapter
+        if (that.props.zoomLevel === 2) {
+          adapter = that.state.adapter
+        }
+
+        if (!adapter) {
+          return
+        }
+        let adapterData = adapter[feature.property_CTP_ENG_NM]
+
+        const miseCount = that.props.data.airData[adapterData]
+        // console.log(feature.property_CTP_ENG_NM, miseCount)
         var styleOptions = {
           fillColor: '#ff0000',
           fillOpacity: 0.0,
@@ -63,20 +96,37 @@ class Map extends Component {
           strokeOpacity: 0.8
         }
 
-        if (feature.getProperty('focus')) {
-          styleOptions.fillOpacity = 0.6
-          styleOptions.fillColor = '#0f0'
-          styleOptions.strokeColor = '#0f0'
-          styleOptions.strokeWeight = 4
-          styleOptions.strokeOpacity = 1
+        // if (feature.getProperty('focus')) {
+
+        styleOptions.fillOpacity = 0.6
+        if (miseCount >= 0) {
+          styleOptions.fillColor = '#1894E3'
         }
+
+        if (miseCount >= 16) {
+          styleOptions.fillColor = '#17BA6C'
+        }
+
+        if (miseCount >= 36) {
+          styleOptions.fillColor = '#CFDA36'
+        }
+
+        if (miseCount >= 76) {
+          styleOptions.fillColor = '#DF8F4D'
+        }
+        // styleOptions.fillOpacity = 0.6
+        // styleOptions.fillColor = '#0f0'
+        // styleOptions.strokeColor = '#0f0'
+        // styleOptions.strokeWeight = 4
+        // styleOptions.strokeOpacity = 1
+        // }
 
         return styleOptions
       })
 
       map.data.addListener('mouseover', function (e) {
         map.data.overrideStyle(e.feature, {
-          strokeWeight: 8
+          strokeWeight: 4
         })
 
         map.data.addListener('mouseout', function (e) {
@@ -147,7 +197,11 @@ class Map extends Component {
           this.state.newMap.data.removeFeature(item)
         }
       }
+      console.log('geoData', data.geoData)
+      console.log('airData', data.airData)
+
       data.geoData.forEach(element => {
+        // console.log('geoData', JSON.stringify(element.properties.CTP_ENG_NM))
         this.state.newMap.data.addGeoJson(element)
       })
     }
