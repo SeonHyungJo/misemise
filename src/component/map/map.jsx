@@ -3,7 +3,9 @@ import loadScriptPromise from './loadNavermapsScript'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDataAsync } from '../../modules'
-import { cloneObject } from '../../util/common'
+import {sig} from   '../../util/adaptor'
+
+
 
 class Map extends Component {
   constructor () {
@@ -35,10 +37,12 @@ class Map extends Component {
     }
   }
 
+
   componentDidMount () {
     const { ncpClientId, getDataAsync, _lat, _lng, zoomLevel } = this.props
+    const that = this
 
-    loadScriptPromise(ncpClientId).then((naver) => {
+    loadScriptPromise(ncpClientId).then(  (naver) => {
       let zoomRange = [2, 4, 6]
       let maxZoom = zoomRange[zoomRange.length - 1]
       let minZoom = zoomRange[0]
@@ -71,8 +75,8 @@ class Map extends Component {
           parentCd: []
         })
       })
-      let that = this
 
+<<<<<<< HEAD
       map.data.setStyle((feature) => {
         // console.log('feature', feature.property_SIG_ENG_NM || '')
 
@@ -88,14 +92,41 @@ class Map extends Component {
 
         const miseCount = that.props.data.airData[adapterData]
         // console.log(feature.property_CTP_ENG_NM, miseCount)
-        var styleOptions = {
-          fillColor: '#ff0000',
-          fillOpacity: 0.0,
-          strokeColor: '#ff0000',
-          strokeWeight: 2,
-          strokeOpacity: 0.8
+=======
+      map.data.setStyle(function (feature) {
+
+        let airNm = sig[feature.property_CTPRVN_CD].AIR_NM
+
+        let airData = that.props.data.airData;
+        let airLv = airData[airNm]
+        
+        let getLevel = (_num) => {
+          _num = parseInt(_num, 10)
+    
+          let container = []
+          container.push({ min: 0, max: 15, level: '좋음' })
+          container.push({ min: 16, max: 35, level: '보통' })
+          container.push({ min: 36, max: 75, level: '나쁨' })
+          container.push({ min: 76, max: 999, level: '매우나쁨' })
+    
+          return container.filter((info) => {
+            let condition = info.min <= _num && _num <= info.max
+            return condition
+          })[0]
         }
 
+
+
+>>>>>>> 22c121ea4fb49239a2eb3c921f4d329047b327e2
+        var styleOptions = {
+          fillOpacity: 0.6,
+          fillColor: '#ff0000',
+          strokeColor: '#ff0000',
+          strokeWeight: 2,
+          strokeOpacity: 0.5
+        }
+
+<<<<<<< HEAD
         // if (feature.getProperty('focus')) {
 
         styleOptions.fillOpacity = 0.6
@@ -110,6 +141,32 @@ class Map extends Component {
         if (miseCount >= 36) {
           styleOptions.fillColor = '#CFDA36'
         }
+=======
+        let lvKor = getLevel(airLv).level;
+          switch(lvKor){
+            case "좋음"://#
+                styleOptions.fillColor = '#117cf6'
+              break;
+            case "보통"://
+                styleOptions.fillColor = '#50af32'
+              break;
+            case "나쁨"://
+                styleOptions.fillColor = '#c4b341'
+              break;
+            case "매우나쁨": //
+                styleOptions.fillColor = '#d36f36'
+              break;
+          }
+
+
+        // if (feature.getProperty('focus')) {
+        //   styleOptions.fillOpacity = 0.6
+        //   styleOptions.fillColor = '#0f0'
+        //   styleOptions.strokeColor = '#0f0'
+        //   styleOptions.strokeWeight = 4
+        //   styleOptions.strokeOpacity = 1
+        // }
+>>>>>>> 22c121ea4fb49239a2eb3c921f4d329047b327e2
 
         if (miseCount >= 76) {
           styleOptions.fillColor = '#DF8F4D'
@@ -129,10 +186,11 @@ class Map extends Component {
           strokeWeight: 4
         })
 
-        map.data.addListener('mouseout', function (e) {
-          map.data.revertStyle()
-        })
+      map.data.addListener('mouseout', function (e) {
+        map.data.revertStyle()
       })
+    })
+      
 
       // zoom UP
       map.data.addListener('click', function (e) {
@@ -182,12 +240,15 @@ class Map extends Component {
       return getDataAsync({ _lat, _lng, zoomLevel, naver, map })
     }).catch((ex) => {
       console.error(ex)
-    })
+    })//END_promise
   }
+
 
   render () {
     const { data } = this.props
+    
     if (data.geoData) {
+      console.log('data_Init=========');
       // 데이터 초기화
       let allFeature = this.state.newMap.data.getAllFeature()
 
@@ -197,21 +258,26 @@ class Map extends Component {
           this.state.newMap.data.removeFeature(item)
         }
       }
+<<<<<<< HEAD
       console.log('geoData', data.geoData)
       console.log('airData', data.airData)
 
+=======
+      
+>>>>>>> 22c121ea4fb49239a2eb3c921f4d329047b327e2
       data.geoData.forEach(element => {
         // console.log('geoData', JSON.stringify(element.properties.CTP_ENG_NM))
         this.state.newMap.data.addGeoJson(element)
       })
     }
+  
     return (
       <>
         <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={this.map}></div>
         {/* {JSON.stringify(data)} */}
       </>
     )
-  }
+    }
 }
 
 const mapStateToProps = (state) => ({
