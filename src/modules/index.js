@@ -8,6 +8,9 @@ const getMiseDate = (otp) => {
   //zoomLevel : 요청 레벨.
 
   return axios.request({
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
     method: 'GET',
     url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
   })
@@ -66,11 +69,11 @@ const counterInitialState = {
 // 리듀서.
 export default handleActions({
   [GET_MISE_DATA]: (state, action) => {
-    const { data, _lat, _lng, map } = action.payload
+    const { data, _lat, _lng, map, zoomLevel } = action.payload
 
     return {
       ...state,
-      'zoomLevel': state.nextZoom,
+      'zoomLevel': zoomLevel,
       'mapObj': map,
       'lat': _lat,
       'lng': _lng,

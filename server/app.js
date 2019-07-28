@@ -4,16 +4,13 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const request = require('request')
-//const qs = require('querystring')
+const qs = require('querystring')
 const adaptor = require(`./util/adaptor`)
 
+const port = process.env.PORT
+const SERVICE_KEY = process.env.AIR_SERVICEKEY
 
-const SERVICE_KEY = "mglCHo09SQqHPVt1AyfuZymDTpMndPMH2ZR3ZrZFR0OdywtT6AlVRQF%2BE8wphx716aaU%2FxS6zLQ1USWLLAkMaQ%3D%3D"
-
-const port = 8080
-// const port = process.env.PORT
-// const SERVICE_KEY = process.env.AIR_SERVICEKEY
-
+// CORS 허용 미들웨어
 app.all('/*', function (req, res, next) {
   //CORS(air_data)
   res.header('Accept-Charset', 'utf-8')
@@ -25,7 +22,7 @@ app.all('/*', function (req, res, next) {
 
 // air API의 requset parameter로 변환하여 반환한다.
 let nameConverter = (_lv, parentCd) => {
-
+ 
   let air_ko_nm = "";
 
   switch(_lv){
@@ -38,8 +35,8 @@ let nameConverter = (_lv, parentCd) => {
   }
 
   console.log("====이름변환",air_ko_nm)
-  
-  return air_ko_nm
+  // escape 처리
+  return qs.escape(air_ko_nm)
 }
 
 app.get('/', function (req, res) {
@@ -48,25 +45,25 @@ app.get('/', function (req, res) {
   let zoomLevel = req.query.zoomLevel || 2
   let parentCd = req.query.parentCd || 2
   let pageNo = 1
-  let Rows = 1
+  let Rows = 100
   let uri = 'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc'
   let geoFileName = ''
-  // console.log('server_Enter',zoomLevel,sidoName,stationName);
 
+  // 행정 구역별 구분 진행
   switch (zoomLevel) {
-    case '2': // 시도
+    case '2': // 시도 ( (5) 시도별 실시간 평균정보 조회 오퍼레이션 명세)
       uri += `/getCtprvnMesureLIst?itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK`
       geoFileName = 'CTPRVN.json'
       break
-      case '4': // (3)시도별 실시간 측정정보 조회 &ver=1.
+
+    case '4': //시군구 (6) 시군구별 실시간 평균정보 조회 오퍼레이션 명세
       sidoName = nameConverter(zoomLevel, parentCd)
   
-      //uri += `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
-      uri += `/getCtprvnRltmMesureDnsty?sidoName=${sidoName}&ver=1.3`
+      uri += `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
+      //uri += `/getCtprvnRltmMesureDnsty?sidoName=${sidoName}&ver=1.3`
       geoFileName = `sig/${parentCd}.json`
-
-
       break
+
     case '6': // 읍면동
       stationName = nameConverter(zoomLevel, parentCd)
       uri += `/getMsrstnAcctoRltmMesureDnsty?stationName=${stationName}&dataTerm=month&ver=1.3`
@@ -76,14 +73,20 @@ app.get('/', function (req, res) {
 
   uri += `&pageNo=${pageNo}&numOfRows=${Rows}&ServiceKey=${SERVICE_KEY}&_returnType=json`
 
-  console.log(url);
+  console.log(uri);
   // 공공API 서버에 요청.
   request(uri.trim(),
     (error, response, body) => {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         let geoJSON = require(`./geoJSON/${geoFileName}`)
         let airData = JSON.parse(body)
-        airData = airData.list[0]
+        
+        if(zoomLevel == "2"){
+          airData = airData.list[0]
+        }else{
+          airData = airData.list
+        }
+        
 
 
         // 통합데이터
@@ -96,11 +99,47 @@ app.get('/', function (req, res) {
 
           switch(zoomLevel){
             case"2":
-              airNm = adaptor.sig[item.properties.CTPRVN_CD].AIR_NM
+
+              //이름 통합.
+              item.properties.LOC_CD = item.properties.CTPRVN_CD;
+              item.properties.LOC_ENG_NM = item.properties.CTP_ENG_NM;
+              item.properties.LOC_KOR_NM = item.properties.CTP_KOR_NM;
+              // delete item.properties.CTPRVN_CD;
+              // delete item.properties.CTP_ENG_NM;
+              // delete item.properties.CTP_KOR_NM;
+
+              airNm = adaptor.sig[item.properties.LOC_CD].AIR_NM
               item.properties.AIR_LV = airData[airNm]
+
 
               break
             case"4":
+              
+              //이름 통합.
+              item.properties.LOC_CD = item.properties.SIG_CD;
+              item.properties.LOC_ENG_NM = item.properties.SIG_ENG_NM;
+              item.properties.LOC_KOR_NM = item.properties.SIG_KOR_NM;
+              // delete item.properties.SIG_CD;
+              // delete item.properties.SIG_ENG_NM;
+              // delete item.properties.SIG_KOR_NM;
+              
+              let leng = airData.length;
+              let air_Lv = 999;
+              for(let i=0; i<leng; i++){
+                let obj = airData[i]
+
+                //let condition = obj.cityNameEng.includes(item.properties.LOC_ENG_NM);
+                let condition = item.properties.LOC_ENG_NM.includes(obj.cityNameEng);
+                if(condition){
+                  air_Lv = obj.pm25Value || 999;
+                  break;
+                }
+              }
+              item.properties.AIR_LV = air_Lv
+
+              //"SIG_CD":"47111","SIG_ENG_NM":"Nam-gu, Pohang-si","SIG_KOR_NM":"포항시 남구"
+
+
               break
             case"6":
              break
@@ -110,12 +149,6 @@ app.get('/', function (req, res) {
           return item;
         })
 
-        // let result = {
-        //   airData: airData.list[0],
-        //   geoData: geoJSON.features
-        // }
-        //res.send(result)
-  
 
         res.send(result)
       } else {

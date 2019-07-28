@@ -3,7 +3,6 @@ import loadScriptPromise from './loadNavermapsScript'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDataAsync } from '../../modules'
-import * as adaptor from   '../../util/adaptor'
 
 
 
@@ -59,8 +58,9 @@ class Map extends Component {
 
       map.data.setStyle(function (feature) {
 
-        //geoJSON 지명을 넣고 해당하는 미세먼지 데이터 수치가 나온다.
-        let airLv  = feature.property_AIR_LV
+        // let airNm = sig[feature.property_CTPRVN_CD].AIR_NM
+        // let airData = that.props.data.airData;
+        let airLv = feature.property_AIR_LV
         
         let getLevel = (_num) => {
           _num = parseInt(_num, 10)
@@ -86,6 +86,7 @@ class Map extends Component {
           strokeWeight: 2,
           strokeOpacity: 0.5
         }
+
 
         let lvKor = getLevel(airLv).level;
         switch(lvKor){
@@ -138,8 +139,7 @@ class Map extends Component {
 
         let currentZoom = map.getZoom()
         if (maxZoom > currentZoom) {
-          //geoJSON 요청
-          let parentCd = currentZoom === 2 ? feature.property_CTPRVN_CD
+          let parentCd = currentZoom === 2 ? feature.property_LOC_CD
             : currentZoom === 4 ? feature.property_SIG_CD
               : parentCd
 
@@ -181,8 +181,7 @@ class Map extends Component {
 
   render () {
     const { data } = this.props
-    
-    if (data.geoData) {
+    if (data && data.geoData) {
       console.log('data_Init=========');
       // 데이터 초기화
       let allFeature = this.state.newMap.data.getAllFeature()
