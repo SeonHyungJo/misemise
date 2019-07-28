@@ -88,9 +88,6 @@ class Map extends Component {
           strokeOpacity: 0.5
         }
 
-        if(typeof getLevel(airLv) === 'undefined'){
-          debugger;
-        }
 
         let lvKor = getLevel(airLv).level;
           switch(lvKor){

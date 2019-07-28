@@ -10,6 +10,7 @@ const adaptor = require(`./util/adaptor`)
 const port = process.env.PORT
 const SERVICE_KEY = process.env.AIR_SERVICEKEY
 
+// CORS 허용 미들웨어
 app.all('/*', function (req, res, next) {
   //CORS(air_data)
   res.header('Accept-Charset', 'utf-8')
@@ -48,13 +49,15 @@ app.get('/', function (req, res) {
   let uri = 'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc'
   let geoFileName = ''
 
-   console.log('줌레벨=====',zoomLevel);
+  // 행정 구역별 구분 진행
   switch (zoomLevel) {
     case '2': // 시도 ( (5) 시도별 실시간 평균정보 조회 오퍼레이션 명세)
       uri += `/getCtprvnMesureLIst?itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK`
       geoFileName = 'CTPRVN.json'
       break
+
       case '4': //시군구 (6) 시군구별 실시간 평균정보 조회 오퍼레이션 명세
+      case '4': // (3)시도별 실시간 측정정보 조회 &ver=1.
       sidoName = nameConverter(zoomLevel, parentCd)
   
       uri += `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
@@ -76,7 +79,7 @@ app.get('/', function (req, res) {
   // 공공API 서버에 요청.
   request(uri.trim(),
     (error, response, body) => {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         let geoJSON = require(`./geoJSON/${geoFileName}`)
         let airData = JSON.parse(body)
         
