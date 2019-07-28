@@ -1,28 +1,38 @@
 import React, { Component } from 'react'
-import loadScriptPromise from './loadNavermapsScript'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getDataAsync } from '../../modules'
+import { getDataAsync } from '../../store/modules'
+import loadJs from 'load-js'
 
-
+const styleOptions = {
+  fillOpacity: 0.6,
+  fillColor: '#ff0000',
+  strokeColor: '#ff0000',
+  strokeWeight: 2,
+  strokeOpacity: 0.5
+}
 
 class Map extends Component {
   constructor () {
     super()
     this.map = React.createRef()
-
-    // redux에서 관리할 값과 구분.
-    this.state = {
-      miseList: []
-    }
   }
 
+  loadScriptPromise (_ncpClientId) {
+    const requestUrl = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${_ncpClientId}&submodules=geocoder`
+    return loadJs(requestUrl).then(() => {
+      return new Promise(resolve => {
+        window.naver.maps.onJSContentLoaded = () => {
+          resolve(window.naver)
+        }
+      })
+    })
+  }
 
   componentDidMount () {
     const { ncpClientId, getDataAsync, _lat, _lng, zoomLevel } = this.props
-    const that = this
 
-    loadScriptPromise(ncpClientId).then(  (naver) => {
+    this.loadScriptPromise(ncpClientId).then((naver) => {
       let zoomRange = [2, 4, 6]
       let maxZoom = zoomRange[zoomRange.length - 1]
       let minZoom = zoomRange[0]
@@ -46,7 +56,7 @@ class Map extends Component {
         maxZoom: maxZoom,
         minZoom: minZoom
       }
-      let map = new naver.maps.Map('map', mapOptions)
+      const map = new naver.maps.Map('map', mapOptions)
 
       this.setState((prevState) => {
         return ({
@@ -57,61 +67,22 @@ class Map extends Component {
       })
 
       map.data.setStyle(function (feature) {
+        const korLv = feature.property_KOR_LV
 
-        // let airNm = sig[feature.property_CTPRVN_CD].AIR_NM
-        // let airData = that.props.data.airData;
-        let airLv = feature.property_AIR_LV
-        
-        let getLevel = (_num) => {
-          _num = parseInt(_num, 10)
-    
-          let container = []
-          container.push({ min: 0, max: 15, level: '좋음' })
-          container.push({ min: 16, max: 35, level: '보통' })
-          container.push({ min: 36, max: 75, level: '나쁨' })
-          container.push({ min: 76, max: 999, level: '매우나쁨' })
-    
-          return container.filter((info) => {
-            let condition = info.min <= _num && _num <= info.max
-            return condition
-          })[0]
+        switch (korLv) {
+          case '좋음':
+            styleOptions.fillColor = '#117cf6'
+            break
+          case '보통':
+            styleOptions.fillColor = '#50af32'
+            break
+          case '나쁨':
+            styleOptions.fillColor = '#c4b341'
+            break
+          case '매우나쁨':
+            styleOptions.fillColor = '#d36f36'
+            break
         }
-
-
-
-        var styleOptions = {
-          fillOpacity: 0.6,
-          fillColor: '#ff0000',
-          strokeColor: '#ff0000',
-          strokeWeight: 2,
-          strokeOpacity: 0.5
-        }
-
-
-        let lvKor = getLevel(airLv).level;
-        switch(lvKor){
-          case "좋음"://#
-              styleOptions.fillColor = '#117cf6'
-            break;
-          case "보통"://
-              styleOptions.fillColor = '#50af32'
-            break;
-          case "나쁨"://
-              styleOptions.fillColor = '#c4b341'
-            break;
-          case "매우나쁨": //
-              styleOptions.fillColor = '#d36f36'
-            break;
-        }
-
-
-        // if (feature.getProperty('focus')) {
-        //   styleOptions.fillOpacity = 0.6
-        //   styleOptions.fillColor = '#0f0'
-        //   styleOptions.strokeColor = '#0f0'
-        //   styleOptions.strokeWeight = 4
-        //   styleOptions.strokeOpacity = 1
-        // }
 
         return styleOptions
       })
@@ -121,53 +92,42 @@ class Map extends Component {
           strokeWeight: 8
         })
 
-      map.data.addListener('mouseout', function (e) {
-        map.data.revertStyle()
+        map.data.addListener('mouseout', function (e) {
+          map.data.revertStyle()
+        })
       })
-    })
-      
 
       // zoom UP
-      map.data.addListener('click', function (e) {
-        let feature = e.feature
-        // let isFocused = feature.getProperty('focus')
-        // feature.setProperty('focus', !isFocused)
+      map.data.addListener('click', (e) => {
+        const feature = e.feature
+        const { x: _lng, y: _lat } = e.feature.bounds.getCenter()
+        const currentZoom = map.getZoom()
 
-        let { x, y } = feature.bounds.getCenter()
-        let _lat = y
-        let _lng = x
-
-        let currentZoom = map.getZoom()
         if (maxZoom > currentZoom) {
-          let parentCd = currentZoom === 2 ? feature.property_LOC_CD
-            : currentZoom === 4 ? feature.property_SIG_CD
-              : parentCd
+          const parentCd = feature.property_LOC_CD
+          const zoomLevel = zoomRange[zoomRange.indexOf(currentZoom) + 1] || currentZoom
+          const tempArr = this.state.parentCd.slice()
 
-          let tempArr = that.state.parentCd.slice()
+          this.setState({ 'parentCd': tempArr })
           tempArr.push(parentCd)
-          that.setState({ 'parentCd': tempArr })
-          let zoomLevel = zoomRange[zoomRange.indexOf(currentZoom) + 1] || currentZoom
           map.setZoom(zoomLevel)
           map.setCenter(new naver.maps.LatLng(_lat, _lng))
-          getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd,feature })
+          getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd, feature })
         }
       })
 
       // zoom Down
       map.data.addListener('rightclick', (e) => {
-        // console.log('우클릭',e.latlng);
-        let { x, y } = e.feature.bounds.getCenter()
-        let _lat = y
-        let _lng = x
+        const { x: _lng, y: _lat } = e.feature.bounds.getCenter()
+        const currentZoom = map.getZoom()
 
-        let currentZoom = map.getZoom()
         if (minZoom < currentZoom) {
-          let nextIdx = zoomRange.indexOf(currentZoom) - 1
-          let zoomLevel = zoomRange[nextIdx] || currentZoom
+          const nextIdx = zoomRange.indexOf(currentZoom) - 1
+          const zoomLevel = zoomRange[nextIdx] || currentZoom
           map.setZoom(zoomLevel)
           map.setCenter(new naver.maps.LatLng(_lat, _lng))
 
-          let parentCd = that.state.parentCd.shift()
+          const parentCd = this.state.parentCd.shift()
           getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd })
         }
       })
@@ -175,15 +135,12 @@ class Map extends Component {
       return getDataAsync({ _lat, _lng, zoomLevel, naver, map })
     }).catch((ex) => {
       console.error(ex)
-    })//END _promise
+    })// END _promise
   }
-
 
   render () {
     const { data } = this.props
     if (data && data.geoData) {
-      console.log('data_Init=========');
-      // 데이터 초기화
       let allFeature = this.state.newMap.data.getAllFeature()
 
       if (allFeature.length > 0) {
@@ -192,19 +149,19 @@ class Map extends Component {
           this.state.newMap.data.removeFeature(item)
         }
       }
-      
+
       data.geoData.forEach(element => {
         this.state.newMap.data.addGeoJson(element)
       })
     }
-  
+
     return (
       <>
         <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={this.map}></div>
         {/* {JSON.stringify(data)} */}
       </>
     )
-    }
+  }
 }
 
 const mapStateToProps = (state) => ({

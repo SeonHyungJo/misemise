@@ -4,8 +4,8 @@ import axios from 'axios'
 const getMiseDate = (otp) => {
   console.log('getMiose', otp)
 
-  //parentCd : 사용자가 클릭한 geoJSON의 코드값.
-  //zoomLevel : 요청 레벨.
+  // parentCd : 사용자가 클릭한 geoJSON의 코드값.
+  // zoomLevel : 요청 레벨.
 
   return axios.request({
     headers: {
@@ -66,10 +66,30 @@ const counterInitialState = {
   lng: 127.87798
 }
 
+// const getLevel = function (_num) {
+//   _num = parseInt(_num, 10)
+
+//   const container = [
+//     { min: 0, max: 15, level: '좋음' },
+//     { min: 16, max: 35, level: '보통' },
+//     { min: 36, max: 75, level: '나쁨' },
+//     { min: 76, max: 999, level: '매우나쁨' }
+//   ]
+
+//   return container.reduce((acc, cur) => cur.min <= _num ? cur.level : acc, '')
+// }
+
 // 리듀서.
 export default handleActions({
   [GET_MISE_DATA]: (state, action) => {
     const { data, _lat, _lng, map, zoomLevel } = action.payload
+
+    let gridData = []
+    if (data.geoData) {
+      gridData = data.geoData.map(i => {
+        return { 'id': i.properties.LOC_KOR_NM, 'name': i.properties.AIR_LV, 'etc': i.properties.KOR_LV }
+      })
+    }
 
     return {
       ...state,
@@ -77,7 +97,8 @@ export default handleActions({
       'mapObj': map,
       'lat': _lat,
       'lng': _lng,
-      'data': data
+      'data': data,
+      'gridData': gridData
     }
   }
 }, counterInitialState)
