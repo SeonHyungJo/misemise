@@ -8,11 +8,7 @@ const getMiseDate = (otp) => {
       'Content-Type': 'application/json;charset=UTF-8'
     },
     method: 'GET',
-<<<<<<< HEAD
     url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
-=======
-    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&sidoName=${otp.addr.addrdetail.sido}&stationName=${otp.stationName}&parentCd=${otp.parentCd}`
->>>>>>> 80ed91aa6f110a798415eaa813d1a6488bf82eb6
   })
 }
 

@@ -12,7 +12,7 @@
             "protocol": "auto",
             "name": "Server Run",
             "program": "${workspaceFolder}/server/app.js",
-            "envFile": "${workspaceFolder}/server/.env"
+            "envFile": "${workspaceFolder}/server/.env" 
             
         }
     ]

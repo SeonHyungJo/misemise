@@ -3,7 +3,6 @@ import loadScriptPromise from './loadNavermapsScript'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDataAsync } from '../../modules'
-import {sig} from   '../../util/adaptor'
 
 
 
@@ -140,7 +139,7 @@ class Map extends Component {
 
         let currentZoom = map.getZoom()
         if (maxZoom > currentZoom) {
-          let parentCd = currentZoom === 2 ? feature.property_CTPRVN_CD
+          let parentCd = currentZoom === 2 ? feature.property_LOC_CD
             : currentZoom === 4 ? feature.property_SIG_CD
               : parentCd
 

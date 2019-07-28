@@ -56,16 +56,14 @@ app.get('/', function (req, res) {
       geoFileName = 'CTPRVN.json'
       break
 
-      case '4': //시군구 (6) 시군구별 실시간 평균정보 조회 오퍼레이션 명세
-      case '4': // (3)시도별 실시간 측정정보 조회 &ver=1.
+    case '4': //시군구 (6) 시군구별 실시간 평균정보 조회 오퍼레이션 명세
       sidoName = nameConverter(zoomLevel, parentCd)
   
       uri += `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
       //uri += `/getCtprvnRltmMesureDnsty?sidoName=${sidoName}&ver=1.3`
       geoFileName = `sig/${parentCd}.json`
-
-
       break
+
     case '6': // 읍면동
       stationName = nameConverter(zoomLevel, parentCd)
       uri += `/getMsrstnAcctoRltmMesureDnsty?stationName=${stationName}&dataTerm=month&ver=1.3`
@@ -101,24 +99,46 @@ app.get('/', function (req, res) {
 
           switch(zoomLevel){
             case"2":
-            
-              airNm = adaptor.sig[item.properties.CTPRVN_CD].AIR_NM
+
+              //이름 통합.
+              item.properties.LOC_CD = item.properties.CTPRVN_CD;
+              item.properties.LOC_ENG_NM = item.properties.CTP_ENG_NM;
+              item.properties.LOC_KOR_NM = item.properties.CTP_KOR_NM;
+              // delete item.properties.CTPRVN_CD;
+              // delete item.properties.CTP_ENG_NM;
+              // delete item.properties.CTP_KOR_NM;
+
+              airNm = adaptor.sig[item.properties.LOC_CD].AIR_NM
               item.properties.AIR_LV = airData[airNm]
+
 
               break
             case"4":
+              
+              //이름 통합.
+              item.properties.LOC_CD = item.properties.SIG_CD;
+              item.properties.LOC_ENG_NM = item.properties.SIG_ENG_NM;
+              item.properties.LOC_KOR_NM = item.properties.SIG_KOR_NM;
+              // delete item.properties.SIG_CD;
+              // delete item.properties.SIG_ENG_NM;
+              // delete item.properties.SIG_KOR_NM;
+              
               let leng = airData.length;
               let air_Lv = 999;
               for(let i=0; i<leng; i++){
                 let obj = airData[i]
 
-                let condition = obj.cityNameEng.includes(item.properties.SIG_ENG_NM);
+                //let condition = obj.cityNameEng.includes(item.properties.LOC_ENG_NM);
+                let condition = item.properties.LOC_ENG_NM.includes(obj.cityNameEng);
                 if(condition){
                   air_Lv = obj.pm25Value || 999;
                   break;
                 }
               }
               item.properties.AIR_LV = air_Lv
+
+              //"SIG_CD":"47111","SIG_ENG_NM":"Nam-gu, Pohang-si","SIG_KOR_NM":"포항시 남구"
+
 
               break
             case"6":
@@ -129,12 +149,6 @@ app.get('/', function (req, res) {
           return item;
         })
 
-        // let result = {
-        //   airData: airData.list[0],
-        //   geoData: geoJSON.features
-        // }
-        //res.send(result)
-  
 
         res.send(result)
       } else {
