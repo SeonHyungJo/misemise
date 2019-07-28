@@ -1,4 +1,5 @@
-export const sig = {  
+var nameMap = {
+   "sig" : {  
         "11":{  
            "CTP_ENG_NM":"Seoul",
            "AIR_NM":"seoul"
@@ -67,5 +68,10 @@ export const sig = {
            "CTP_ENG_NM":"Jeju-do",
            "AIR_NM":"jeju"
         }
+     },
+     "emd" : {
+        
      }
-  
+   }
+
+export default nameMap

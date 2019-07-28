@@ -3,9 +3,13 @@ import axios from 'axios'
 
 const getMiseDate = (otp) => {
   console.log('getMiose', otp)
+
+  //parentCd : 사용자가 클릭한 geoJSON의 코드값.
+  //zoomLevel : 요청 레벨.
+
   return axios.request({
     method: 'GET',
-    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&sidoName=${otp.sidoName}&stationName=${otp.stationName}&parentCd=${otp.parentCd}`
+    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
   })
 }
 

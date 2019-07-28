@@ -3,7 +3,7 @@ import loadScriptPromise from './loadNavermapsScript'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDataAsync } from '../../modules'
-import {sig} from   '../../util/adaptor'
+import * as adaptor from   '../../util/adaptor'
 
 
 
@@ -59,10 +59,8 @@ class Map extends Component {
 
       map.data.setStyle(function (feature) {
 
-        let airNm = sig[feature.property_CTPRVN_CD].AIR_NM
-
-        let airData = that.props.data.airData;
-        let airLv = airData[airNm]
+        //geoJSON 지명을 넣고 해당하는 미세먼지 데이터 수치가 나온다.
+        let airLv  = feature.property_AIR_LV
         
         let getLevel = (_num) => {
           _num = parseInt(_num, 10)
@@ -90,20 +88,20 @@ class Map extends Component {
         }
 
         let lvKor = getLevel(airLv).level;
-          switch(lvKor){
-            case "좋음"://#
-                styleOptions.fillColor = '#117cf6'
-              break;
-            case "보통"://
-                styleOptions.fillColor = '#50af32'
-              break;
-            case "나쁨"://
-                styleOptions.fillColor = '#c4b341'
-              break;
-            case "매우나쁨": //
-                styleOptions.fillColor = '#d36f36'
-              break;
-          }
+        switch(lvKor){
+          case "좋음"://#
+              styleOptions.fillColor = '#117cf6'
+            break;
+          case "보통"://
+              styleOptions.fillColor = '#50af32'
+            break;
+          case "나쁨"://
+              styleOptions.fillColor = '#c4b341'
+            break;
+          case "매우나쁨": //
+              styleOptions.fillColor = '#d36f36'
+            break;
+        }
 
 
         // if (feature.getProperty('focus')) {
@@ -134,12 +132,13 @@ class Map extends Component {
         // let isFocused = feature.getProperty('focus')
         // feature.setProperty('focus', !isFocused)
 
-        let { x, y } = e.feature.bounds.getCenter()
+        let { x, y } = feature.bounds.getCenter()
         let _lat = y
         let _lng = x
 
         let currentZoom = map.getZoom()
         if (maxZoom > currentZoom) {
+          //geoJSON 요청
           let parentCd = currentZoom === 2 ? feature.property_CTPRVN_CD
             : currentZoom === 4 ? feature.property_SIG_CD
               : parentCd
@@ -150,7 +149,7 @@ class Map extends Component {
           let zoomLevel = zoomRange[zoomRange.indexOf(currentZoom) + 1] || currentZoom
           map.setZoom(zoomLevel)
           map.setCenter(new naver.maps.LatLng(_lat, _lng))
-          getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd })
+          getDataAsync({ _lat, _lng, zoomLevel, naver, map, parentCd,feature })
         }
       })
 
@@ -176,7 +175,7 @@ class Map extends Component {
       return getDataAsync({ _lat, _lng, zoomLevel, naver, map })
     }).catch((ex) => {
       console.error(ex)
-    })//END_promise
+    })//END _promise
   }
 
 

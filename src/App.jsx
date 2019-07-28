@@ -33,6 +33,7 @@ class App extends Component {
       })[0]
     }
 
+    /*
     if (data.airData) {
       var exception = ['dataTime', 'totalCount', 'serviceKey', 'searchCondition', '_returnType', 'itemCode', 'dataTerm', 'resultCode', 'resultMsg']
       for (var item in data.airData) {
@@ -43,7 +44,7 @@ class App extends Component {
         }
       }
     }
-
+*/
     return (
       <>
         <Map ncpClientId={process.env.REACT_APP_SERVICEKEY}/>
