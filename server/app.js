@@ -4,15 +4,11 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const request = require('request')
-//const qs = require('querystring')
+const qs = require('querystring')
 const adaptor = require(`./util/adaptor`)
 
-
-const SERVICE_KEY = "mglCHo09SQqHPVt1AyfuZymDTpMndPMH2ZR3ZrZFR0OdywtT6AlVRQF%2BE8wphx716aaU%2FxS6zLQ1USWLLAkMaQ%3D%3D"
-
-const port = 8080
-// const port = process.env.PORT
-// const SERVICE_KEY = process.env.AIR_SERVICEKEY
+const port = process.env.PORT
+const SERVICE_KEY = process.env.AIR_SERVICEKEY
 
 app.all('/*', function (req, res, next) {
   //CORS(air_data)
@@ -38,8 +34,8 @@ let nameConverter = (_lv, parentCd) => {
   }
 
   console.log("====이름변환",air_ko_nm)
-  
-  return air_ko_nm
+  // escape 처리
+  return qs.escape(air_ko_nm)
 }
 
 app.get('/', function (req, res) {
@@ -48,21 +44,21 @@ app.get('/', function (req, res) {
   let zoomLevel = req.query.zoomLevel || 2
   let parentCd = req.query.parentCd || 2
   let pageNo = 1
-  let Rows = 1
+  let Rows = 100
   let uri = 'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc'
   let geoFileName = ''
-  // console.log('server_Enter',zoomLevel,sidoName,stationName);
 
+   console.log('줌레벨=====',zoomLevel);
   switch (zoomLevel) {
-    case '2': // 시도
+    case '2': // 시도 ( (5) 시도별 실시간 평균정보 조회 오퍼레이션 명세)
       uri += `/getCtprvnMesureLIst?itemCode=PM10&dataGubun=HOUR&searchCondition=WEEK`
       geoFileName = 'CTPRVN.json'
       break
-      case '4': // (3)시도별 실시간 측정정보 조회 &ver=1.
+      case '4': //시군구 (6) 시군구별 실시간 평균정보 조회 오퍼레이션 명세
       sidoName = nameConverter(zoomLevel, parentCd)
   
-      //uri += `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
-      uri += `/getCtprvnRltmMesureDnsty?sidoName=${sidoName}&ver=1.3`
+      uri += `/getCtprvnMesureSidoLIst?sidoName=${sidoName}&searchCondition=HOUR`
+      //uri += `/getCtprvnRltmMesureDnsty?sidoName=${sidoName}&ver=1.3`
       geoFileName = `sig/${parentCd}.json`
 
 
@@ -76,14 +72,20 @@ app.get('/', function (req, res) {
 
   uri += `&pageNo=${pageNo}&numOfRows=${Rows}&ServiceKey=${SERVICE_KEY}&_returnType=json`
 
-  console.log(url);
+  console.log(uri);
   // 공공API 서버에 요청.
   request(uri.trim(),
     (error, response, body) => {
       if (!error && response.statusCode == 200) {
         let geoJSON = require(`./geoJSON/${geoFileName}`)
         let airData = JSON.parse(body)
-        airData = airData.list[0]
+        
+        if(zoomLevel == "2"){
+          airData = airData.list[0]
+        }else{
+          airData = airData.list
+        }
+        
 
 
         // 통합데이터
@@ -96,11 +98,25 @@ app.get('/', function (req, res) {
 
           switch(zoomLevel){
             case"2":
+            
               airNm = adaptor.sig[item.properties.CTPRVN_CD].AIR_NM
               item.properties.AIR_LV = airData[airNm]
 
               break
             case"4":
+              let leng = airData.length;
+              let air_Lv = 999;
+              for(let i=0; i<leng; i++){
+                let obj = airData[i]
+
+                let condition = obj.cityNameEng.includes(item.properties.SIG_ENG_NM);
+                if(condition){
+                  air_Lv = obj.pm25Value || 999;
+                  break;
+                }
+              }
+              item.properties.AIR_LV = air_Lv
+
               break
             case"6":
              break

@@ -33,16 +33,16 @@ class App extends Component {
       })[0]
     }
 
-    if (data.airData) {
-      var exception = ['dataTime', 'totalCount', 'serviceKey', 'searchCondition', '_returnType', 'itemCode', 'dataTerm', 'resultCode', 'resultMsg']
-      for (var item in data.airData) {
-        if (data.airData.hasOwnProperty(item) && !exception.includes(item)) {
-          gridData.push({
-            id: item, name: data.airData[item], etc: getLevel(data.airData[item]).level
-          })
-        }
-      }
-    }
+    // if (data.airData) {
+    //   var exception = ['dataTime', 'totalCount', 'serviceKey', 'searchCondition', '_returnType', 'itemCode', 'dataTerm', 'resultCode', 'resultMsg']
+    //   for (var item in data.airData) {
+    //     if (data.airData.hasOwnProperty(item) && !exception.includes(item)) {
+    //       gridData.push({
+    //         id: item, name: data.airData[item], etc: getLevel(data.airData[item]).level
+    //       })
+    //     }
+    //   }
+    // }
 
     return (
       <>

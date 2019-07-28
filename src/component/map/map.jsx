@@ -59,10 +59,9 @@ class Map extends Component {
 
       map.data.setStyle(function (feature) {
 
-        let airNm = sig[feature.property_CTPRVN_CD].AIR_NM
-
-        let airData = that.props.data.airData;
-        let airLv = airData[airNm]
+        // let airNm = sig[feature.property_CTPRVN_CD].AIR_NM
+        // let airData = that.props.data.airData;
+        let airLv = feature.property_AIR_LV
         
         let getLevel = (_num) => {
           _num = parseInt(_num, 10)
@@ -87,6 +86,10 @@ class Map extends Component {
           strokeColor: '#ff0000',
           strokeWeight: 2,
           strokeOpacity: 0.5
+        }
+
+        if(typeof getLevel(airLv) === 'undefined'){
+          debugger;
         }
 
         let lvKor = getLevel(airLv).level;
@@ -182,8 +185,7 @@ class Map extends Component {
 
   render () {
     const { data } = this.props
-    
-    if (data.geoData) {
+    if (data && data.geoData) {
       console.log('data_Init=========');
       // 데이터 초기화
       let allFeature = this.state.newMap.data.getAllFeature()

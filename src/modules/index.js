@@ -5,7 +5,7 @@ const getMiseDate = (otp) => {
   console.log('getMiose', otp)
   return axios.request({
     method: 'GET',
-    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&sidoName=${otp.sidoName}&stationName=${otp.stationName}&parentCd=${otp.parentCd}`
+    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
   })
 }
 
