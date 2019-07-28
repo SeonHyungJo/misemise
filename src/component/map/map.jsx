@@ -138,23 +138,26 @@ class Map extends Component {
     })// END _promise
   }
 
-  render () {
-    const { data } = this.props
+  shouldComponentUpdate (props, state) {
+    const { data } = props
     if (data && data.geoData) {
-      let allFeature = this.state.newMap.data.getAllFeature()
+      let allFeature = state.newMap.data.getAllFeature()
 
       if (allFeature.length > 0) {
         while (allFeature.length > 0) {
           let item = allFeature[0]
-          this.state.newMap.data.removeFeature(item)
+          state.newMap.data.removeFeature(item)
         }
       }
 
       data.geoData.forEach(element => {
-        this.state.newMap.data.addGeoJson(element)
+        state.newMap.data.addGeoJson(element)
       })
     }
+    return true
+  }
 
+  render () {
     return (
       <>
         <div id="map" style={{ width: '100%', height: 600 + 'px' }} ref={this.map}></div>

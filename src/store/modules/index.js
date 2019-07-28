@@ -66,19 +66,6 @@ const counterInitialState = {
   lng: 127.87798
 }
 
-// const getLevel = function (_num) {
-//   _num = parseInt(_num, 10)
-
-//   const container = [
-//     { min: 0, max: 15, level: '좋음' },
-//     { min: 16, max: 35, level: '보통' },
-//     { min: 36, max: 75, level: '나쁨' },
-//     { min: 76, max: 999, level: '매우나쁨' }
-//   ]
-
-//   return container.reduce((acc, cur) => cur.min <= _num ? cur.level : acc, '')
-// }
-
 // 리듀서.
 export default handleActions({
   [GET_MISE_DATA]: (state, action) => {
