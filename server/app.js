@@ -7,10 +7,8 @@ const request = require('request')
 const qs = require('querystring')
 const fs = require('fs')
 const path = require('path')
-let adaptor = fs.readFileSync(path.join(__dirname, 'util/adaptor.json'))
-adaptor = JSON.parse(adaptor)
-
-// const path = require('path')
+let __adaptor = fs.readFileSync(path.join(__dirname, 'util/adaptor.json'))
+let adaptor = JSON.parse(__adaptor)
 
 const port = process.env.PORT
 const SERVICE_KEY = process.env.AIR_SERVICEKEY
@@ -34,6 +32,7 @@ let nameConverter = (_lv, parentCd) => {
       air_ko_nm = adaptor.sig[parentCd].AIR_KO_NM
       break
     case '6': // 읍면동
+      air_ko_nm = adaptor.emd[parentCd].AIR_KO_NM
       break
   }
 
@@ -52,8 +51,8 @@ const getLevel = function (_num) {
     { min: 76, max: 999, level: '매우나쁨' }
   ]
 
-  return container.find(item => item.min <= _num && item.max >= _num).level
-//  return container.reduce((acc, cur) => cur.min <= _num ? cur.level : acc, '')
+  // return container.find(item => item.min <= _num && item.max >= _num).level
+  return container.reduce((acc, cur) => cur.min <= _num ? cur.level : acc, '')
 }
 
 app.get('/', function (req, res) {
@@ -90,7 +89,6 @@ app.get('/', function (req, res) {
 
   uri += `&pageNo=${pageNo}&numOfRows=${Rows}&ServiceKey=${SERVICE_KEY}&_returnType=json`
 
-  console.log(uri)
   // 공공API 서버에 요청.
   request(uri.trim(),
     (error, response, body) => {
@@ -102,17 +100,20 @@ app.get('/', function (req, res) {
           airData = airData.list[0]
         } else {
           // 데이터 포멧 가공 map
-          debugger
-          airData = airData.list
+          airData = airData.list.map(item => {
+            let temp = {}
+            temp[item.cityNameEng] = item.pm25Value
+            return temp
+          })
         }
 
         // 통합데이터
         // 컨버팅은 서버에서한다.
         // geoData에 미세먼지 데이터를 통합하여 추가한다.
         let result = {}
-        // let fileFath = path.join(__dirname, '/util/adaptor_re.json')
-        // let targetFile = fs.readFileSync(fileFath, 'utf8')
-        // targetFile = JSON.parse(targetFile)
+        let fileFath = path.join(__dirname, '/util/adaptor.json')
+        let targetFile = fs.readFileSync(fileFath, 'utf8')
+        targetFile = JSON.parse(targetFile)
 
         result.geoData = geoJSON.features.map(item => {
           let airNm = ''
@@ -144,11 +145,15 @@ app.get('/', function (req, res) {
               // delete item.properties.SIG_KOR_NM;
               // /Users/byeonggyu/Desktop/etc/200.dev/10.project/misemise/server/util/adaptor.js
 
-              airLv = adaptor.emd[item.properties.LOC_CD].AIR_NM
-              airLv = airData[airNm]
-              debugger
+              // if (!adaptor.emd[item.properties.LOC_CD]) {
+              //   console.error(item.properties.LOC_CD, '가 없습니다.')
+              //   debugger
+              // }
 
-              /*
+              // airNm = adaptor.emd[item.properties.LOC_CD].AIR_NM
+              // airLv = airData[airNm]
+              // debugger
+
               for (let i = 0; i < airData.length; i++) {
                 let obj = airData[i]
 
@@ -162,30 +167,25 @@ app.get('/', function (req, res) {
                     'AIR_NM': obj.cityNameEng,
                     'AIR_KO_NM': obj.cityName
                   }
-                  // adapter.js emd
-
-                  // '50': {
-                  //   'CTP_ENG_NM': 'Jeju-do',
-                  //   'AIR_NM': 'jeju',
-                  //   'AIR_KO_NM': '제주'
-                  // }
-                  // fs.writeFileSync(){
-
-                  // }
+                  break
+                } else {
+                  targetFile.emd[item.properties.SIG_CD] = {
+                    'SIG_ENG_NM': item.properties.SIG_ENG_NM,
+                    'AIR_NM': '데이터없음',
+                    'AIR_KO_NM': '데이터없음'
+                  }
                   break
                 }
               }
-*/
-              // "SIG_CD":"47111","SIG_ENG_NM":"Nam-gu, Pohang-si","SIG_KOR_NM":"포항시 남구"
 
               break
             case '6':
               break
           }
 
-          // let tempData = JSON.stringify(targetFile)
-          // let tempPath = path.join(__dirname, '/util/adaptor_re.json')
-          // fs.writeFileSync(tempPath, tempData)
+          let tempData = JSON.stringify(targetFile)
+          let _path = path.join(__dirname, '/util/adaptor.json')
+          fs.writeFileSync(_path, tempData)
 
           item.properties.AIR_LV = airLv
           item.properties.KOR_LV = getLevel(airLv)
