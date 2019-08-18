@@ -119,38 +119,60 @@ app.get('/', function (req, res) {
         result.geoData = geoJSON.features.map(item => {
           let airNm = ''
           let airLv = '999'
+          let { LOC_CD, LOC_ENG_NM, LOC_KOR_NM } = item.properties
 
           switch (zoomLevel) {
             case '2':
 
-              // 이름 통합.
-              item.properties.LOC_CD = item.properties.CTPRVN_CD
-              item.properties.LOC_ENG_NM = item.properties.CTP_ENG_NM
-              item.properties.LOC_KOR_NM = item.properties.CTP_KOR_NM
-              // delete item.properties.CTPRVN_CD;
-              // delete item.properties.CTP_ENG_NM;
-              // delete item.properties.CTP_KOR_NM;
+              // 이름 통합
+              if (item.properties.CTPRVN_CD) {
+                LOC_CD = item.properties.CTPRVN_CD
+                delete item.properties.CTPRVN_CD
+              }
 
-              airNm = adaptor.sig[item.properties.LOC_CD].AIR_NM
+              if (item.properties.CTP_ENG_NM) {
+                LOC_ENG_NM = item.properties.CTP_ENG_NM
+                delete item.properties.CTP_ENG_NM
+              }
+
+              if (item.properties.CTP_KOR_NM) {
+                LOC_KOR_NM = item.properties.CTP_KOR_NM
+                delete item.properties.CTP_KOR_NM
+              }
+
+              airNm = adaptor.sig[LOC_CD].AIR_NM
               airLv = airData[airNm]
 
               break
             case '4':
 
               // 이름 통합.
-              item.properties.LOC_CD = item.properties.SIG_CD
-              item.properties.LOC_ENG_NM = item.properties.SIG_ENG_NM
-              item.properties.LOC_KOR_NM = item.properties.SIG_KOR_NM
-              // delete item.properties.SIG_CD;
-              // delete item.properties.SIG_ENG_NM;
-              // delete item.properties.SIG_KOR_NM;
-              airLv = airData[item.properties.LOC_ENG_NM] || 999
+              if (item.properties.SIG_CD) {
+                LOC_CD = item.properties.SIG_CD
+                delete item.properties.SIG_CD
+              }
+
+              if (item.properties.SIG_ENG_NM) {
+                LOC_ENG_NM = item.properties.SIG_ENG_NM
+                delete item.properties.SIG_ENG_NM
+              }
+
+              if (item.properties.SIG_KOR_NM) {
+                LOC_KOR_NM = item.properties.SIG_KOR_NM
+                delete item.properties.SIG_KOR_NM
+              }
+
+              airLv = airData[LOC_ENG_NM] || 999
 
               break
             case '6':
               break
           }
 
+          // 이 부분이 왜 필요한지????
+          item.properties.LOC_CD = LOC_CD
+          item.properties.LOC_ENG_NM = LOC_ENG_NM
+          item.properties.LOC_KOR_NM = LOC_KOR_NM
           item.properties.AIR_LV = airLv
           item.properties.KOR_LV = getLevel(airLv)
 

@@ -20,13 +20,13 @@ class Map extends Component {
 
   loadScriptPromise (_ncpClientId) {
     const requestUrl = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${_ncpClientId}&submodules=geocoder`
-    return loadJs(requestUrl).then(() => {
-      return new Promise(resolve => {
+    return loadJs(requestUrl).then(() =>
+      new Promise(resolve => {
         window.naver.maps.onJSContentLoaded = () => {
           resolve(window.naver)
         }
       })
-    })
+    )
   }
 
   componentDidMount () {
