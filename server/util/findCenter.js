@@ -19,13 +19,33 @@ const path = require('path')
           "coordinates": [ ]
           }
  */
+
+/**
+  *  산술 평균값을 구한다.
+  *  MultiPolygon인 경우에는 가장 큰 곳을 기준으로 한다.
+  * @param {*} obj
+  */
+const getGeoAvg = function (obj) {
+
+}
+
 /**
  *   해당 경로에 모든 GeoJSON에 중앙값을 추가한다.
  *  @param geoJSON {JSON}
  *  @return geoJSON {JSON}
  */
 const getCenter = function (geoJSON) {
-  debugger
+  if (typeof geoJSON === 'object') {
+    let { features } = geoJSON
+
+    features = features.map(feature => {
+      // Polygon
+      // MultiPolygon
+      let _avg = getGeoAvg(feature.geometry)
+      feature.properties.CENTER = _avg
+      return feature
+    })
+  }
 }
 
 /**
@@ -51,7 +71,4 @@ const addCenterSpot = function (dirPath) {
   })
 }
 
-// addCenterSpot(path.join(__dirname, '/geoJSON'))
-// addCenterSpot('../geoJSON')
-
-let geoJSON = require('../geoJSON/')
+addCenterSpot('../geoJSON')

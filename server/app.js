@@ -51,8 +51,10 @@ const getLevel = function (_num) {
     { min: 76, max: 999, level: '매우나쁨' }
   ]
 
-  // return container.find(item => item.min <= _num && item.max >= _num).level
-  return container.reduce((acc, cur) => cur.min <= _num ? cur.level : acc, '')
+  let re = container.find(item => item.min <= _num && item.max >= _num)
+
+  return re.level
+  // return container.reduce((acc, cur) => cur.min <= _num ? cur.level : acc, '')
 }
 
 app.get('/', function (req, res) {
@@ -100,11 +102,10 @@ app.get('/', function (req, res) {
           airData = airData.list[0]
         } else {
           // 데이터 포멧 가공 map
-          airData = airData.list.map(item => {
-            let temp = {}
-            temp[item.cityNameEng] = item.pm25Value
-            return temp
-          })
+          airData = airData.list.reduce((pre, cur, idx, arr) => {
+            pre[cur.cityNameEng] = cur.pm25Value
+            return pre
+          }, {})
         }
 
         // 통합데이터
@@ -112,8 +113,8 @@ app.get('/', function (req, res) {
         // geoData에 미세먼지 데이터를 통합하여 추가한다.
         let result = {}
         let fileFath = path.join(__dirname, '/util/adaptor.json')
-        let targetFile = fs.readFileSync(fileFath, 'utf8')
-        targetFile = JSON.parse(targetFile)
+        let _adapter = fs.readFileSync(fileFath, 'utf8')
+        _adapter = JSON.parse(_adapter)
 
         result.geoData = geoJSON.features.map(item => {
           let airNm = ''
@@ -143,49 +144,12 @@ app.get('/', function (req, res) {
               // delete item.properties.SIG_CD;
               // delete item.properties.SIG_ENG_NM;
               // delete item.properties.SIG_KOR_NM;
-              // /Users/byeonggyu/Desktop/etc/200.dev/10.project/misemise/server/util/adaptor.js
-
-              // if (!adaptor.emd[item.properties.LOC_CD]) {
-              //   console.error(item.properties.LOC_CD, '가 없습니다.')
-              //   debugger
-              // }
-
-              // airNm = adaptor.emd[item.properties.LOC_CD].AIR_NM
-              // airLv = airData[airNm]
-              // debugger
-
-              for (let i = 0; i < airData.length; i++) {
-                let obj = airData[i]
-
-                // let condition = obj.cityNameEng.includes(item.properties.LOC_ENG_NM);
-                let condition = item.properties.LOC_ENG_NM.includes(obj.cityNameEng)
-                if (condition) {
-                  airLv = obj.pm25Value || 999
-
-                  targetFile.emd[item.properties.SIG_CD] = {
-                    'SIG_ENG_NM': item.properties.SIG_ENG_NM,
-                    'AIR_NM': obj.cityNameEng,
-                    'AIR_KO_NM': obj.cityName
-                  }
-                  break
-                } else {
-                  targetFile.emd[item.properties.SIG_CD] = {
-                    'SIG_ENG_NM': item.properties.SIG_ENG_NM,
-                    'AIR_NM': '데이터없음',
-                    'AIR_KO_NM': '데이터없음'
-                  }
-                  break
-                }
-              }
+              airLv = airData[item.properties.LOC_ENG_NM] || 999
 
               break
             case '6':
               break
           }
-
-          let tempData = JSON.stringify(targetFile)
-          let _path = path.join(__dirname, '/util/adaptor.json')
-          fs.writeFileSync(_path, tempData)
 
           item.properties.AIR_LV = airLv
           item.properties.KOR_LV = getLevel(airLv)

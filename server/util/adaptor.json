@@ -1017,20 +1017,75 @@
             "AIR_NM": "Sangju-si",
             "AIR_KO_NM": "상주시"
         },
+        "47280": {
+            "SIG_ENG_NM": "Mungyeong-si",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
         "47290": {
             "SIG_ENG_NM": "Gyeongsan-si",
             "AIR_NM": "Gyeongsan-si",
             "AIR_KO_NM": "경산시"
+        },
+        "47720": {
+            "SIG_ENG_NM": "Gunwi-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47730": {
+            "SIG_ENG_NM": "Uiseong-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47750": {
+            "SIG_ENG_NM": "Cheongsong-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47760": {
+            "SIG_ENG_NM": "Yeongyang-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47770": {
+            "SIG_ENG_NM": "Yeongdeok-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47820": {
+            "SIG_ENG_NM": "Cheongdo-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47830": {
+            "SIG_ENG_NM": "Goryeong-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "47840": {
+            "SIG_ENG_NM": "Seongju-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
         },
         "47850": {
             "SIG_ENG_NM": "Chilgok-gun",
             "AIR_NM": "Chilgok-gun",
             "AIR_KO_NM": "칠곡군"
         },
+        "47900": {
+            "SIG_ENG_NM": "Yecheon-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
         "47920": {
             "SIG_ENG_NM": "Bonghwa-gun",
             "AIR_NM": "Bonghwa-gun",
             "AIR_KO_NM": "봉화군"
+        },
+        "47930": {
+            "SIG_ENG_NM": "Uljin-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
         },
         "47940": {
             "SIG_ENG_NM": "Ulleung-gun",
@@ -1097,10 +1152,20 @@
             "AIR_NM": "Yangsan-si",
             "AIR_KO_NM": "양산시"
         },
+        "48720": {
+            "SIG_ENG_NM": "Uiryeong-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
         "48730": {
             "SIG_ENG_NM": "Haman-gun",
             "AIR_NM": "Haman-gun",
             "AIR_KO_NM": "함안군"
+        },
+        "48740": {
+            "SIG_ENG_NM": "Changnyeong-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
         },
         "48820": {
             "SIG_ENG_NM": "Goseong-gun",
@@ -1116,11 +1181,25 @@
             "SIG_ENG_NM": "Hadong-gun",
             "AIR_NM": "Hadong-gun",
             "AIR_KO_NM": "하동군"
+        "48860": {
+            "SIG_ENG_NM": "Sancheong-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
+        },
+        "48870": {
+            "SIG_ENG_NM": "Hamyang-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
         },
         "48880": {
             "SIG_ENG_NM": "Geochang-gun",
             "AIR_NM": "Geochang-gun",
             "AIR_KO_NM": "거창군"
+        },
+        "48890": {
+            "SIG_ENG_NM": "Hapcheon-gun",
+            "AIR_NM": "데이터없음",
+            "AIR_KO_NM": "데이터없음"
         },
         "50110": {
             "SIG_ENG_NM": "Jeju-si",
