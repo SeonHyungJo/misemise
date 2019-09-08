@@ -140,6 +140,7 @@ class Map extends Component {
 
   shouldComponentUpdate (props, state) {
     const { data } = props
+
     if (data && data.geoData) {
       let allFeature = state.newMap.data.getAllFeature()
 

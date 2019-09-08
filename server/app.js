@@ -425,7 +425,7 @@ app.get('/emd', (req, res) => {
 
     }).then((rtn) => {
       console.log('===============읍면동 조회완료========================');
-      res.send(rtn)
+      res.send({geoData:rtn.features})
     }).catch((e) => {
       console.error(e.stack);
     });
