@@ -77,7 +77,7 @@ const getGeoData = function (zoomLevel = 2, parentCd) {
 }
 
 
-const getAirKoreaUrl = function (zoomLevel = 2, parentCd, geoData) {
+const getAirKoreaUrl = function (zoomLevel = 2, parentCd, geoData,stationName) {
   const pageNo = 1
   const Rows = 100;
   let uri = 'http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc'
@@ -181,6 +181,7 @@ const preprocessing = function (geoJSON, zoomLevel, adaptorJSON, parentCd) {
               let airData = JSON.parse(body);
               if (_feature.properties.STATION_INFO) {
                 //가장 가까운 곳
+                console.log(`${_feature.properties.LOC_KOR_NM}의  관측소 ${airData.list[0].stationName}`)
                 _feature.properties.STATION_INFO.stationName = airData.list[0].stationName
                 //TODO: 파일쓰기. memorization.
               }
@@ -377,12 +378,6 @@ app.get('/emd', (req, res) => {
 
 
 
-
-
-
-
-  let result;
-
   //전처리 작업. preprocessing
   preprocessing(geoJSON, zoomLevel, adaptorJSON, parentCd)
     .then((_geoJSON) => {
@@ -390,30 +385,49 @@ app.get('/emd', (req, res) => {
 
       return _geoJSON.features.reduce((pre, feature, idx, arr) => {
 
-        return pre.then(() => promiseFactory((reslove, reject) => {
+        return pre.then((__geoJSON) => promiseFactory((resolve, reject) => {
           let stationName = feature.properties.STATION_INFO.stationName
 
-          if (!stationName) {
-            resolve(resolve)
+          stationName = qs.escape(stationName)
+
+          if (!feature.properties.STATION_INFO||!stationName) {
+            console.log(`${feature.properties.LOC_KOR_NM}에 관측소정보가 없습니다`);
+            let airLv = '999'
+            __geoJSON.features[idx].properties.AIR_LV = airLv
+            __geoJSON.features[idx].KOR_LV = getLevel(airLv)
+            resolve(__geoJSON)
+          }else{
+            let uri = getAirKoreaUrl(zoomLevel, parentCd, geoJSON,stationName);
+            request(uri.trim(), (error, response, body) => {
+  
+              try{
+                if(!error && response.statusCode === 200){
+                  let resData = JSON.parse(body)
+                  let airLv = resData.list[0].pm25Value
+                  __geoJSON.features[idx].properties.AIR_LV = airLv
+                  __geoJSON.features[idx].properties.KOR_LV = getLevel(airLv)
+                }else{
+                  throw new Error('통신오류')
+                }
+               
+              }catch(e){
+                console.log()
+              }
+  
+              resolve(__geoJSON);
+            })
           }
-          let uri = getAirKoreaUrl(zoomLevel, parentCd, geoJSON);
-          request(uri.trim(), (error, response, body) => {
-
-
-            //item.properties.AIR_LV = airLv
-            //  item.properties.KOR_LV = getLevel(airLv)
-            resolve(resolve);
-          })
+        
         }))
 
-      }, Promise.resolve());
+      }, Promise.resolve(_geoJSON));
 
 
     }).then((rtn) => {
-      console.log(rtn);
+      console.log('===============읍면동 조회완료========================');
       res.send(rtn)
     }).catch((e) => {
-      console.log(e);
+      console.error(e.stack);
     });
 
 })// END_GET
