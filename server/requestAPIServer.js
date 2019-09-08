@@ -1,6 +1,7 @@
 const request = require('request')
 const fs = require('fs')
 const path = require('path')
+const qs = require('querystring')
 
 const { getAirKoreaUrl, getSearchTMOperationURL, getSearchNearStationURL } = require('./createURI')
 const adapterString = fs.readFileSync(path.join(__dirname, 'util/adaptor.json'))
@@ -50,6 +51,10 @@ module.exports = {
           }
         } catch (e) {
           console.error(`${LOC_KOR_NM} TM 기준좌표 조회 정보가 없습니다.`)
+          _feature.properties.STATION_INFO = {
+            'tmX': '',
+            'tmY': ''
+          }
         }
         resolve({ _geoJSON, idx })
       } else {
@@ -63,6 +68,8 @@ module.exports = {
   getNearStation: ({ _geoJSON, idx }) => promiseFactory((resolve, reject) => {
     const _feature = _geoJSON.features[idx].properties
     const { tmX, tmY } = _feature.STATION_INFO
+
+    console.log('좌표!!!!!', tmX, tmY)
 
     if (tmX && tmY && _feature.STATION_INFO) {
       request(getSearchNearStationURL(tmX, tmX), (error, response, body) => {
