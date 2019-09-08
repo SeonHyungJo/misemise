@@ -6,13 +6,22 @@ const getMiseDate = (otp) => {
 
   // parentCd : 사용자가 클릭한 geoJSON의 코드값.
   // zoomLevel : 요청 레벨.
+  let serverUrl = 'http://localhost:8080'
+  let sig = `/sig?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
+  let emd = `/emd?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}&lat=${otp.lat}&lot=${otp.lot}`
+  let country = `/country?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
 
+  let url = serverUrl +
+  (otp.zoomLevel === 2 ? country
+  : otp.zoomLevel === 4 ? sig
+  : otp.zoomLevel === 6 ? emd : "")
+  
   return axios.request({
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     },
     method: 'GET',
-    url: `http://localhost:8080?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
+    url: url
   })
 }
 

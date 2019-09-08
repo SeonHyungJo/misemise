@@ -4,18 +4,18 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26110",
-        "SIG_ENG_NM": "Jung-gu",
-        "SIG_KOR_NM": "중구"
+        "LOC_CD": "26110",
+        "LOC_ENG_NM": "Jung-gu",
+        "LOC_KOR_NM": "중구"
       },
       "geometry": null
     },
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26140",
-        "SIG_ENG_NM": "Seo-gu",
-        "SIG_KOR_NM": "서구"
+        "LOC_CD": "26140",
+        "LOC_ENG_NM": "Seo-gu",
+        "LOC_KOR_NM": "서구"
       },
       "geometry": {
         "type": "Polygon",
@@ -228,9 +228,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26170",
-        "SIG_ENG_NM": "Dong-gu",
-        "SIG_KOR_NM": "동구"
+        "LOC_CD": "26170",
+        "LOC_ENG_NM": "Dong-gu",
+        "LOC_KOR_NM": "동구"
       },
       "geometry": {
         "type": "Polygon",
@@ -363,9 +363,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26200",
-        "SIG_ENG_NM": "Yeongdo-gu",
-        "SIG_KOR_NM": "영도구"
+        "LOC_CD": "26200",
+        "LOC_ENG_NM": "Yeongdo-gu",
+        "LOC_KOR_NM": "영도구"
       },
       "geometry": {
         "type": "Polygon",
@@ -410,9 +410,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26230",
-        "SIG_ENG_NM": "Busanjin-gu",
-        "SIG_KOR_NM": "부산진구"
+        "LOC_CD": "26230",
+        "LOC_ENG_NM": "Busanjin-gu",
+        "LOC_KOR_NM": "부산진구"
       },
       "geometry": {
         "type": "Polygon",
@@ -725,9 +725,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26260",
-        "SIG_ENG_NM": "Dongnae-gu",
-        "SIG_KOR_NM": "동래구"
+        "LOC_CD": "26260",
+        "LOC_ENG_NM": "Dongnae-gu",
+        "LOC_KOR_NM": "동래구"
       },
       "geometry": {
         "type": "Polygon",
@@ -884,9 +884,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26290",
-        "SIG_ENG_NM": "Nam-gu",
-        "SIG_KOR_NM": "남구"
+        "LOC_CD": "26290",
+        "LOC_ENG_NM": "Nam-gu",
+        "LOC_KOR_NM": "남구"
       },
       "geometry": {
         "type": "Polygon",
@@ -995,9 +995,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26320",
-        "SIG_ENG_NM": "Buk-gu",
-        "SIG_KOR_NM": "북구"
+        "LOC_CD": "26320",
+        "LOC_ENG_NM": "Buk-gu",
+        "LOC_KOR_NM": "북구"
       },
       "geometry": {
         "type": "Polygon",
@@ -1202,9 +1202,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26350",
-        "SIG_ENG_NM": "Haeundae-gu",
-        "SIG_KOR_NM": "해운대구"
+        "LOC_CD": "26350",
+        "LOC_ENG_NM": "Haeundae-gu",
+        "LOC_KOR_NM": "해운대구"
       },
       "geometry": {
         "type": "Polygon",
@@ -1469,9 +1469,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26380",
-        "SIG_ENG_NM": "Saha-gu",
-        "SIG_KOR_NM": "사하구"
+        "LOC_CD": "26380",
+        "LOC_ENG_NM": "Saha-gu",
+        "LOC_KOR_NM": "사하구"
       },
       "geometry": {
         "type": "Polygon",
@@ -1704,9 +1704,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26410",
-        "SIG_ENG_NM": "Geumjeong-gu",
-        "SIG_KOR_NM": "금정구"
+        "LOC_CD": "26410",
+        "LOC_ENG_NM": "Geumjeong-gu",
+        "LOC_KOR_NM": "금정구"
       },
       "geometry": {
         "type": "Polygon",
@@ -1859,9 +1859,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26440",
-        "SIG_ENG_NM": "Gangseo-gu",
-        "SIG_KOR_NM": "강서구"
+        "LOC_CD": "26440",
+        "LOC_ENG_NM": "Gangseo-gu",
+        "LOC_KOR_NM": "강서구"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -3020,9 +3020,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26470",
-        "SIG_ENG_NM": "Yeonje-gu",
-        "SIG_KOR_NM": "연제구"
+        "LOC_CD": "26470",
+        "LOC_ENG_NM": "Yeonje-gu",
+        "LOC_KOR_NM": "연제구"
       },
       "geometry": {
         "type": "Polygon",
@@ -3255,9 +3255,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26500",
-        "SIG_ENG_NM": "Suyeong-gu",
-        "SIG_KOR_NM": "수영구"
+        "LOC_CD": "26500",
+        "LOC_ENG_NM": "Suyeong-gu",
+        "LOC_KOR_NM": "수영구"
       },
       "geometry": {
         "type": "Polygon",
@@ -3350,9 +3350,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26530",
-        "SIG_ENG_NM": "Sasang-gu",
-        "SIG_KOR_NM": "사상구"
+        "LOC_CD": "26530",
+        "LOC_ENG_NM": "Sasang-gu",
+        "LOC_KOR_NM": "사상구"
       },
       "geometry": {
         "type": "Polygon",
@@ -3685,9 +3685,9 @@
     {
       "type": "Feature",
       "properties": {
-        "SIG_CD": "26710",
-        "SIG_ENG_NM": "Gijang-gun",
-        "SIG_KOR_NM": "기장군"
+        "LOC_CD": "26710",
+        "LOC_ENG_NM": "Gijang-gun",
+        "LOC_KOR_NM": "기장군"
       },
       "geometry": {
         "type": "Polygon",
