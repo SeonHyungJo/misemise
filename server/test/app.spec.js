@@ -1,4 +1,3 @@
-
 // import { expect } from 'chai';
 // import request from 'supertest';
 //import app from '../app';
@@ -7,6 +6,7 @@
 const { expect } = require('chai')
 const request = require('supertest')
 const app = require('../app')
+const assert = require('assert');
 
 
 /**
@@ -46,7 +46,13 @@ const isEquivalent = function(a, b) {
     var bProps = Object.getOwnPropertyNames(b);
 
 
+/*
+//should.js
+    user.should.have.properties('id', 'name');
+    user.id.should.be.a.Number();
+    user.name.should.be.a.String();
 
+*/
     // If number of properties is different,
     // objects are not equivalent
 
@@ -113,7 +119,7 @@ describe('GET /country', () => {
             }
         }
 
-        console.log(`결과 ::${result}`);
+        assert.equal(result, false)
         //expect(res.text).to.equal('Hello World');
         done();
       });
@@ -142,7 +148,7 @@ describe('GET /sig', () => {
             }
         }
 
-        console.log(`결과 ::${result}`);
+        assert.equal(result, true)
         //expect(res.text).to.equal('Hello World');
         done();
       });
@@ -186,7 +192,7 @@ describe('GET /emd', () => {
             }
         }
 
-        console.log(`결과 ::${result}`);
+        assert.equal(result, true)
   
           //expect(res.text).to.equal('Hello World');
           done();
