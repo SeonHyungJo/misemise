@@ -34,7 +34,10 @@ const preprocessing = (geoJSON, zoomLevel) => {
 app.get('/country', ({ query: { parentCd = 2, zoomLevel = 2 } }, res) =>
   preprocessing(getGeoData(zoomLevel, parentCd), zoomLevel)
     .then((_geoJSON) => requestPublicServer(_geoJSON, zoomLevel, parentCd))
-    .then((rtn) => res.send(rtn))
+    .then((rtn) => 
+    
+    
+    res.send( JSON.stringify(rtn) ))
     .then(() => console.log('=========== 전국구 조회완료 ==========='))
     .catch((e) => console.log(e))
 )
@@ -60,3 +63,6 @@ app.get('/emd', ({ query: { parentCd = 2, zoomLevel = 2 } }, res) => {
 app.listen(port, function () {
   console.log('Node Server is Run  listening on port ' + port + '!')
 })
+
+
+module.exports = app;

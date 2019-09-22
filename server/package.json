@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "test": "node ./node_modules/mocha/bin/mocha  --recursive ./test/*.spec.js -w"
   },
   "author": "",
   "license": "ISC",
@@ -15,5 +15,10 @@
     "express": "^4.17.1",
     "nodemon": "^1.19.1",
     "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "supertest": "^4.0.2"
   }
 }

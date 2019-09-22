@@ -6,9 +6,9 @@ const getMiseDate = (otp) => {
 
   // parentCd : 사용자가 클릭한 geoJSON의 코드값.
   // zoomLevel : 요청 레벨.
-  let serverUrl = 'http://localhost:8080'
+  let serverUrl = process.env.REACT_APP_SERVER_URL
   let sig = `/sig?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
-  let emd = `/emd?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}&lat=${otp.lat}&lot=${otp.lot}`
+  let emd = `/emd?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
   let country = `/country?zoomLevel=${otp.zoomLevel}&parentCd=${otp.parentCd}`
 
   let url = serverUrl +
@@ -47,9 +47,9 @@ export const getData = createAction(GET_MISE_DATA)
 
 export const getDataAsync = (otp) => dispatch => {
   // 주소변환.
-  converLatLngToAddr(otp).then(rtn => {
-    return getMiseDate({ ...otp, addr: rtn })
-  }).then(rtn => {
+  converLatLngToAddr(otp).then(rtn => 
+     getMiseDate({ ...otp, addr: rtn })
+  ).then(rtn => {
     // 요청이 성공했을경우, 서버 응답내용을 payload 로 설정하여 GET_POST_SUCCESS 액션을 디스패치합니다.
 
     dispatch({
@@ -81,7 +81,7 @@ export default handleActions({
     const { data, _lat, _lng, map, zoomLevel } = action.payload
 
     let gridData = []
-    if (data.geoData) {
+    if (data&& data.geoData) {
       gridData = data.geoData.map(i => {
         return { 'id': i.properties.LOC_KOR_NM, 'name': i.properties.AIR_LV, 'etc': i.properties.KOR_LV }
       })
