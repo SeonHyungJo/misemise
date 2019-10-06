@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import Map from '../Map'
 import 'tui-grid/dist/tui-grid.css'
 import Grid from '@toast-ui/react-grid'
-import { bindActionCreators } from 'redux'
-import { getDataAsync } from '../../store/modules'
+// import { bindActionCreators } from 'redux'
+// import { getDataAsync } from '../../store/modules'
 
 const columns = [
   { name: 'id', title: '지역' },
@@ -34,8 +34,8 @@ const mapStateToProps = (state) => ({
   gridData: state.gridData
 })
 
-const maDispatchToPrope = (dispatch) => ({
-  getDataAsync: bindActionCreators(getDataAsync, dispatch)
-})
+// const maDispatchToPrope = (dispatch) => ({
+//   getDataAsync: bindActionCreators(getDataAsync, dispatch)
+// })
 
-export default connect(mapStateToProps, maDispatchToPrope)(App)
+export default connect(mapStateToProps, null)(App)

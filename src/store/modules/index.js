@@ -46,8 +46,10 @@ const GET_MISE_DATA = 'GET_MISE_DATA'
 export const getData = createAction(GET_MISE_DATA)
 
 export const getDataAsync = (otp) => dispatch => {
+
   // 주소변환.
-  converLatLngToAddr(otp).then(rtn => 
+  converLatLngToAddr(otp)
+  .then(rtn => 
      getMiseDate({ ...otp, addr: rtn })
   ).then(rtn => {
     // 요청이 성공했을경우, 서버 응답내용을 payload 로 설정하여 GET_POST_SUCCESS 액션을 디스패치합니다.
@@ -78,7 +80,7 @@ const counterInitialState = {
 // 리듀서.
 export default handleActions({
   [GET_MISE_DATA]: (state, action) => {
-    const { data, _lat, _lng, map, zoomLevel } = action.payload
+    const { data, lat, lng, map, zoomLevel } = action.payload
 
     let gridData = []
     if (data&& data.geoData) {
@@ -91,8 +93,8 @@ export default handleActions({
       ...state,
       'zoomLevel': zoomLevel,
       'mapObj': map,
-      'lat': _lat,
-      'lng': _lng,
+      'lat': lat,
+      'lng': lng,
       'data': data,
       'gridData': gridData
     }
