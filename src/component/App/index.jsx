@@ -1,5 +1,5 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import{  useStore  } from 'react-redux'
 import Map from '../Map'
 import 'tui-grid/dist/tui-grid.css'
 import Grid from '@toast-ui/react-grid'
@@ -13,7 +13,10 @@ const columns = [
 ]
 
 // 함수형 컴포넌트
-const App = ({ gridData }) => {
+const App = () => {
+
+  const {gridData} = useStore()
+
   return (
     <>
       <Map ncpClientId={process.env.REACT_APP_SERVICEKEY}/>
@@ -30,12 +33,13 @@ const App = ({ gridData }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  gridData: state.gridData
-})
+// const mapStateToProps = (state) => ({
+//   gridData: state.gridData
+// })
 
 // const maDispatchToPrope = (dispatch) => ({
 //   getDataAsync: bindActionCreators(getDataAsync, dispatch)
 // })
 
-export default connect(mapStateToProps, null)(App)
+// export default connect(mapStateToProps, null)(App)
+export default App

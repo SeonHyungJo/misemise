@@ -1,6 +1,7 @@
 import { handleActions, createAction } from 'redux-actions'
 import axios from 'axios'
 
+
 const getMiseDate = (otp) => {
   console.log('getMiose', otp)
 
@@ -27,10 +28,10 @@ const getMiseDate = (otp) => {
 
 // 한글 주소로 변환한다.
 const converLatLngToAddr = (otp) => {
-  const { naver, _lat, _lng } = otp
+  const { naver, lat, lng } = otp
 
   return new Promise((resolve) => {
-    naver.maps.Service.reverseGeocode({ location: new naver.maps.LatLng(_lat, _lng) }, (status, response) => {
+    naver.maps.Service.reverseGeocode({ location: new naver.maps.LatLng(lat, lng) }, (status, response) => {
       if (status === naver.maps.Service.Status.OK) {
         let addr = response.result.items[0]
         resolve(addr)
@@ -45,7 +46,7 @@ const GET_MISE_DATA = 'GET_MISE_DATA'
 // React에서 호출하는 부분
 export const getData = createAction(GET_MISE_DATA)
 
-export const getDataAsync = (otp) => dispatch => {
+export const getDataAsync = (otp) =>   (dispatch) => {
 
   // 주소변환.
   converLatLngToAddr(otp)
@@ -89,6 +90,7 @@ export default handleActions({
       })
     }
 
+    console.log("module:::",gridData )
     return {
       ...state,
       'zoomLevel': zoomLevel,
@@ -99,4 +101,5 @@ export default handleActions({
       'gridData': gridData
     }
   }
+  
 }, counterInitialState)
