@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Map from '../Map'
-import 'tui-grid/dist/tui-grid.css'
+import './tui-grid.css'
 import Grid from '@toast-ui/react-grid'
 import { bindActionCreators } from 'redux'
 import { getDataAsync } from '../../store/modules'
